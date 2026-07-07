@@ -3,48 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCAS Social AI - ติวสังคม</title>
+    <title>TCAS Social AI - คลังข้อสอบจำลอง A-Level สังคมศึกษา</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
-        body { background: #111827; font-family: 'Segoe UI', Tahoma, sans-serif; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .card { background: #1f2937; padding: 40px; border-radius: 20px; max-width: 600px; width: 90%; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        button { background: #3b82f6; color: white; padding: 15px 25px; border: none; border-radius: 12px; font-size: 16px; margin: 8px; cursor: pointer; display: block; width: 100%; transition: 0.3s; }
-        button:hover { background: #2563eb; transform: translateY(-2px); }
-        .correct { background: #22c55e !important; }
-        .wrong { background: #ef4444 !important; }
+        /* รีเซ็ตและตั้งค่าธีมหลัก (Modern Dark Mode) */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* การ์ดแสดงผลหลัก */
+        .card {
+            background: #1e293b;
+            padding: 40px 30px;
+            border-radius: 24px;
+            max-width: 650px;
+            width: 100%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #38bdf8;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            color: #e2e8f0;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        /* แถบความคืบหน้า (Progress Bar) */
+        .progress-container {
+            width: 100%;
+            background-color: #334155;
+            border-radius: 9999px;
+            height: 8px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #3b82f6, #06b6d4);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .info-text {
+            font-size: 0.95rem;
+            color: #38bdf8;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        /* ดีไซน์ปุ่มกด */
+        button {
+            background: #2563eb;
+            color: #ffffff;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin: 10px 0;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s ease;
+            text-align: left;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover:not(:disabled) {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        /* ปุ่มตรงหน้าแรกและหน้าสรุปผล (จัดกึ่งกลาง) */
+        .btn-center {
+            text-align: center;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            margin-top: 20px;
+        }
+
+        /* สถานะปุ่มเมื่อส่งคำตอบ (Feedback Colors) */
+        button.correct {
+            background-color: #10b981 !important;
+            color: white;
+            border: 1px solid #059669;
+        }
+
+        button.wrong {
+            background-color: #ef4444 !important;
+            color: white;
+            border: 1px solid #dc2626;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* ส่วนแสดงคะแนนตอนจบ */
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: #334155;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 20px auto;
+            color: #38bdf8;
+            border: 4px solid #475569;
+        }
     </style>
 </head>
 <body>
 
 <div class="card" id="app">
     <h1>🏛 TCAS Social AI</h1>
-    <p>แบบทดสอบวิชาสังคมศึกษา A-Level</p>
-    <button onclick="startQuiz()">เริ่มทำข้อสอบ</button>
+    <p>ระบบคลังข้อสอบจำลองและประเมินผล A-Level วิชาสังคมศึกษา</p>
+    <button class="btn-center" onclick="startQuiz()">เริ่มทำข้อสอบ</button>
 </div>
 
 <script>
     let questionIndex = 0;
     let score = 0;
-    let quiz = [
-        { q: "ข้อใดเป็นกฎหมายสูงสุดของประเทศไทย?", a: ["รัฐธรรมนูญ", "พระราชบัญญัติ", "กฎกระทรวง", "ประกาศ"], correct: 0 },
-        { q: "อำนาจอธิปไตยเป็นของใคร?", a: ["รัฐบาล", "ประชาชน", "ศาล", "ทหาร"], correct: 1 },
-        { q: "เศรษฐศาสตร์ศึกษาสิ่งใด?", a: ["การใช้ทรัพยากรที่มีจำกัด", "ดวงดาว", "ภาษา", "ศิลปะ"], correct: 0 },
-        { q: "ระบอบประชาธิปไตยมีหลักสำคัญคืออะไร?", a: ["ประชาชนมีส่วนร่วมทางการเมือง", "ผู้นำมีอำนาจสูงสุด", "ไม่มีการเลือกตั้ง", "ใช้กำลังทหาร"], correct: 0 },
-        { q: "หน่วยงานใดมีหน้าที่ออกกฎหมาย?", a: ["รัฐสภา", "ตำรวจ", "ธนาคาร", "โรงเรียน"], correct: 0 },
-        { q: "เงินเฟ้อหมายถึงอะไร?", a: ["ราคาสินค้าโดยทั่วไปสูงขึ้น", "ราคาสินค้าลดลง", "คนไม่มีงานทำ", "ค่าเงินเพิ่มขึ้น"], correct: 0 },
-        { q: "GDP ใช้วัดสิ่งใด?", a: ["มูลค่าผลผลิตของประเทศ", "จำนวนประชากร", "พื้นที่ประเทศ", "จำนวนโรงเรียน"], correct: 0 },
-        { q: "ภูมิศาสตร์ศึกษาสิ่งใดเป็นหลัก?", a: ["ความสัมพันธ์ระหว่างมนุษย์กับพื้นที่", "เฉพาะภาษา", "เฉพาะเศรษฐกิจ", "เฉพาะการเมือง"], correct: 0 },
-        { q: "องค์การสหประชาชาติใช้ชื่อย่อว่าอะไร?", a: ["UN", "EU", "NATO", "ASEAN"], correct: 0 },
-        { q: "ประเทศไทยปกครองด้วยระบอบใด?", a: ["ประชาธิปไตยอันมีพระมหากษัตริย์ทรงเป็นประมุข", "เผด็จการ", "คอมมิวนิสต์", "สมบูรณาญาสิทธิราชย์"], correct: 0 },
-        { q: "อาเซียนมีสมาชิกเริ่มต้นกี่ประเทศ?", a: ["5 ประเทศ", "3 ประเทศ", "10 ประเทศ", "15 ประเทศ"], correct: 0 },
-        { q: "หน้าที่ของพลเมืองคืออะไร?", a: ["เคารพกฎหมายและใช้สิทธิอย่างรับผิดชอบ", "ไม่สนใจสังคม", "ไม่ทำตามกฎหมาย", "ไม่เลือกตั้ง"], correct: 0 },
-        { q: "การแบ่งอำนาจรัฐมี 3 ฝ่าย ได้แก่ข้อใด?", a: ["นิติบัญญัติ บริหาร ตุลาการ", "ทหาร ตำรวจ ศาล", "เอกชน รัฐบาล โรงเรียน", "ประชาชน ธนาคาร ตลาด"], correct: 0 },
-        { q: "ทรัพยากรทางเศรษฐศาสตร์มีลักษณะอย่างไร?", a: ["มีจำกัดแต่ความต้องการไม่จำกัด", "มีไม่จำกัด", "ไม่มีค่า", "ใช้ไม่ได้"], correct: 0 },
-        { q: "ภาษีเป็นรายได้หลักของใคร?", a: ["รัฐบาล", "บริษัทเอกชน", "ประชาชนคนเดียว", "ธนาคาร"], correct: 0 },
-        { q: "ประวัติศาสตร์ศึกษาเรื่องใด?", a: ["เหตุการณ์ในอดีตของมนุษย์", "อนาคตเท่านั้น", "สูตรคณิตศาสตร์", "สิ่งมีชีวิต"], correct: 0 },
-        { q: "หลักสิทธิมนุษยชนเกี่ยวข้องกับอะไร?", a: ["ศักดิ์ศรีและสิทธิของมนุษย์", "ราคาสินค้า", "การค้า", "กีฬา"], correct: 0 },
-        { q: "ตลาดในทางเศรษฐศาสตร์คืออะไร?", a: ["สถานที่หรือระบบแลกเปลี่ยนสินค้าและบริการ", "โรงเรียน", "รัฐบาล", "ธนาคารกลาง"], correct: 0 },
-        { q: "การเลือกตั้งมีความสำคัญอย่างไร?", a: ["เป็นช่องทางให้ประชาชนเลือกผู้แทน", "ทำให้ไม่มีรัฐบาล", "ยกเลิกกฎหมาย", "ลดสิทธิประชาชน"], correct: 0 },
-        { q: "หลักนิติธรรมหมายถึงอะไร?", a: ["ทุกคนอยู่ภายใต้กฎหมายอย่างเท่าเทียม", "ผู้นำอยู่เหนือกฎหมาย", "ไม่มีกฎหมาย", "ใช้ความรุนแรง"], correct: 0 }
+
+    // คลังข้อสอบจำลอง 20 ข้อ (ปรับระดับความยากและกระจายตัวเลือกคำตอบที่ถูกต้องแล้ว)
+    const quiz = [
+        { q: "หลักธรรมในข้อใดของพระพุทธศาสนา ที่มีกระบวนการสอดคล้องกับ 'วิธีทางวิทยาศาสตร์' มากที่สุด?", a: ["อริยสัจ 4", "พรหมวิหาร 4", "อิทธิบาท 4", "สังคหวัตถุ 4"], correct: 0 },
+        { q: "กฎหมายในข้อใดจัดอยู่ในประเภท 'กฎหมายมหาชน'?", a: ["ประมวลกฎหมายแพ่งและพาณิชย์", "กฎหมายว่าด้วยลิขสิทธิ์", "รัฐธรรมนูญแห่งราชอาณาจักรไทย", "กฎหมายว่าด้วยเช็คและตั๋วเงิน"], correct: 2 },
+        { q: "ตลาดที่มีผู้ขายเพียงไม่กี่ราย สินค้ามีลักษณะคล้ายคลึงกันหรือทดแทนกันได้ดี คือลักษณะของตลาดประเภทใด?", a: ["ตลาดผูกขาด", "ตลาดกึ่งแข่งขันกึ่งผูกขาด", "ตลาดผู้ขายน้อยราย", "ตลาดแข่งขันสมบูรณ์"], correct: 2 },
+        { q: "เหตุการณ์ใดถือเป็นการเริ่มต้นของการ 'ปฏิรูปการเมืองการปกครอง' ในสมัยรัชกาลที่ 5?", a: ["การตั้งสภาที่ปรึกษาราชการแผ่นดิน", "การประกาศเลิกทาส", "การจัดตั้งกระทรวง 12 กระทรวง", "การสร้างทางรถไฟสายแรก"], correct: 0 },
+        { q: "สนธิสัญญาใดที่มีจุดมุ่งหมายหลักในการ 'ลดการปล่อยก๊าซเรือนกระจก' เพื่อแก้ปัญหาโลกร้อน?", a: ["อนุสัญญาไซเตส (CITES)", "พิธีสารมอนทรีออล (Montreal Protocol)", "พิธีสารเกียวโต (Kyoto Protocol)", "อนุสัญญาแรมซาร์ (Ramsar Convention)"], correct: 2 },
+        { q: "ศาสนาใดจัดเป็นศาสนาประเภท 'อเทวนิยม' (ไม่มีความเชื่อเรื่องพระเจ้าผู้สร้างโลก)?", a: ["คริสต์ และ อิสลาม", "พราหมณ์-ฮินดู และ สิกข์", "พุทธ และ เชน", "ยูดาห์ และ คริสต์"], correct: 2 },
+        { q: "ตามรัฐธรรมนูญฉบับปัจจุบัน องค์กรใดมีหน้าที่วินิจฉัยความชอบด้วยรัฐธรรมนูญของร่างกฎหมาย?", a: ["ศาลยุติธรรม", "ศาลปกครอง", "ศาลรัฐธรรมนูญ", "ผู้ตรวจการแผ่นดิน"], correct: 2 },
+        { q: "หากเศรษฐกิจของประเทศกำลังเผชิญภาวะ 'เงินฝืด' รัฐบาลและธนาคารกลางควรใช้นโยบายแบบใด?", a: ["เพิ่มภาษีและลดการใช้จ่ายของรัฐบาล", "เพิ่มอัตราดอกเบี้ยและขายพันธบัตร", "ลดภาษีและเพิ่มอัตราเงินสดสำรอง", "เพิ่มการใช้จ่ายของรัฐบาลและลดอัตราดอกเบี้ย"], correct: 3 },
+        { q: "อารยธรรมใดในยุคโบราณที่ได้รับการยกย่องว่าเป็น 'ต้นกำเนิดของระบอบประชาธิปไตย'?", a: ["อียิปต์โบราณ", "กรีกโบราณ", "โรมันโบราณ", "เมโสโปเตเมีย"], correct: 1 },
+        { q: "หากต้องการศึกษา 'ความหนาแน่นของประชากร' ในแต่ละจังหวัดของประเทศไทย ควรใช้เครื่องมือทางภูมิศาสตร์ใดจึงจะเหมาะสมและดูง่ายที่สุด?", a: ["ภาพถ่ายทางอากาศ", "แผนที่เฉพาะเรื่อง (Thematic Map)", "แผนที่ภูมิประเทศ (Topographic Map)", "ภาพจากดาวเทียม"], correct: 1 },
+        { q: "ข้อใดคือ 'ผลดี' ของการตั้งกำแพงภาษีศุลกากรเพื่อกีดกันทางการค้าระหว่างประเทศ?", a: ["ผู้บริโภคได้ใช้สินค้าในราคาที่ถูกลง", "อุตสาหกรรมภายในประเทศได้รับการคุ้มครอง", "เกิดการแข่งขันเสรีอย่างเต็มรูปแบบ", "ลดปัญหาความยากจนของประชากรโลกได้ถาวร"], correct: 1 },
+        { q: "สถาบันทางสังคมใดที่มีความสำคัญพื้นฐานที่สุดในการ 'ขัดเกลาทางสังคม' แก่มนุษย์?", a: ["สถาบันครอบครัว", "สถาบันการศึกษา", "สถาบันศาสนา", "สถาบันสื่อสารมวลชน"], correct: 0 },
+        { q: "การทำ 'สนธิสัญญาเบาว์ริง' ในสมัยรัชกาลที่ 4 ส่งผลกระทบต่อระบบเศรษฐกิจไทยอย่างไร?", a: ["เปลี่ยนจากเศรษฐกิจแบบพึ่งตนเองเป็นเศรษฐกิจแบบเพื่อการค้า", "ไทยต้องเสียภาษีส่งออกข้าวในอัตราที่สูงขึ้นมาก", "เกิดการยกเลิกการใช้เงินพดด้วงอย่างเป็นทางการ", "รัฐบาลสามารถผูกขาดการค้าได้มากขึ้นผ่านพระคลังสินค้า"], correct: 0 },
+        { q: "ข้อใดคือ 'หลักปฏิบัติ' ที่มุสลิมทุกคนที่บรรลุนิติภาวะและมีความพร้อมต้องปฏิบัติในชีวิตประจำวัน?", a: ["การไปทำพิธีฮัจญ์ทุกปี", "การบริจาคซะกาต 50% ของรายได้", "การละหมาดวันละ 5 เวลา", "การปฏิญาณตนเฉพาะก่อนเสียชีวิต"], correct: 2 },
+        { q: "ภูมิภาคใดของประเทศไทยที่มีลักษณะภูมิประเทศส่วนใหญ่เป็น 'แอ่งกระทะ' และมักประสบปัญหาดินเค็ม?", a: ["ภาคเหนือ", "ภาคกลาง", "ภาคตะวันออก", "ภาคตะวันออกเฉียงเหนือ"], correct: 3 },
+        { q: "บุคคลในกลุ่มใดเป็นผู้ที่ได้รับ 'ผลประโยชน์' เมื่อเกิดภาวะเงินเฟ้อสูงขึ้นในระบบเศรษฐกิจ?", a: ["ข้าราชการบำนาญ", "ผู้มีรายได้ประจำ", "ลูกหนี้", "เจ้าหนี้"], correct: 2 },
+        { q: "ข้อใด 'ไม่ใช่' เสาหลักในการขับเคลื่อนประชาคมอาเซียน (ASEAN Community)?", a: ["ประชาคมการเมืองและความมั่นคงอาเซียน", "ประชาคมเศรษฐกิจอาเซียน", "ประชาคมสังคมและวัฒนธรรมอาเซียน", "ประชาคมการศึกษาและเทคโนโลยีอาเซียน"], correct: 3 },
+        { q: "เหตุการณ์ใดถือเป็น 'ชนวนเหตุ' สำคัญที่ลุกลามจนทำให้เกิดสงครามโลกครั้งที่ 1?", a: ["การโจมตีอ่าวเพิร์ลฮาร์เบอร์", "การลอบปลงพระชนม์อาร์ชดยุก ฟรานซ์ เฟอร์ดินานด์", "การปฏิวัติบอลเชวิคในรัสเซีย", "การบุกโจมตีโปแลนด์ของกองทัพนาซีเยอรมนี"], correct: 1 },
+        { q: "พื้นที่บริเวณใดของโลกที่มักเกิดปรากฏการณ์ 'แผ่นดินไหวและภูเขาไฟระเบิด' มากที่สุด?", a: ["แนวรอยต่อภูเขาไฟแอตแลนติก", "วงแหวนแห่งไฟ (Ring of Fire) รอบมหาสมุทรแปซิฟิก", "ที่ราบลุ่มแม่น้ำแอมะซอน", "บริเวณตอนกลางของทวีปออสเตรเลีย"], correct: 1 },
+        { q: "คัมภีร์ใดถือเป็นคัมภีร์ที่เก่าแก่และมีความสำคัญที่สุดในศาสนาพราหมณ์-ฮินดู?", a: ["คัมภีร์ฤคเวท", "คัมภีร์สามเวท", "คัมภีร์ยชุรเวท", "คัมภีร์อาถรรพเวท"], correct: 0 }
     ];
 
     function startQuiz() {
@@ -54,32 +199,71 @@
     }
 
     function showQuestion() {
-        let q = quiz[questionIndex];
-        let buttons = q.a.map((x, i) => `<button onclick="checkAnswer(${i}, this)">${x}</button>`).join("");
-        document.getElementById("app").innerHTML = `<h3>ข้อ ${questionIndex + 1}/${quiz.length}</h3><p style="font-size: 1.2rem; margin-bottom: 20px;">${q.q}</p>${buttons}`;
+        const currentQuiz = quiz[questionIndex];
+        const progressPercent = ((questionIndex) / quiz.length) * 100;
+
+        // เจนเนอเรตปุ่มตัวเลือกตอบ
+        const choicesHtml = currentQuiz.a.map((choice, index) => 
+            `<button onclick="submitAnswer(${index}, this)">${index + 1}. ${choice}</button>`
+        ).join("");
+
+        // แสดงผลข้อถามบนหน้าจอ
+        document.getElementById("app").innerHTML = `
+            <div class="info-text">ข้อที่ ${questionIndex + 1} จาก ${quiz.length}</div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: ${progressPercent}%"></div>
+            </div>
+            <h2>${currentQuiz.q}</h2>
+            <div style="text-align: left;">
+                ${choicesHtml}
+            </div>
+        `;
     }
 
-    function checkAnswer(choice, btn) {
-        let allBtns = document.querySelectorAll('button');
-        allBtns.forEach(b => b.disabled = true);
+    function submitAnswer(selectedIndex, selectedButton) {
+        const currentQuiz = quiz[questionIndex];
+        const allButtons = document.querySelectorAll("#app button");
 
-        if (choice === quiz[questionIndex].correct) {
+        // ล็อกไม่ให้ผู้เรียนกดปุ่มซ้ำระว่างประมวลผลคำตอบ
+        allButtons.forEach(btn => btn.disabled = true);
+
+        // ตรวจสอบคำตอบ
+        if (selectedIndex === currentQuiz.correct) {
             score++;
-            btn.classList.add('correct');
+            selectedButton.classList.add("correct");
         } else {
-            btn.classList.add('wrong');
-            allBtns[quiz[questionIndex].correct].classList.add('correct');
+            selectedButton.classList.add("wrong");
+            // ไฮไลต์บอกข้อที่ถูกจริงให้ผู้เรียนเห็นด้วย
+            allButtons[currentQuiz.correct].classList.add("correct");
         }
 
+        // ดีเลย์ 1.5 วินาที เพื่อแสดงเฉลยสีเขียว/แดง ก่อนจะสลับไปข้อถัดไป
         setTimeout(() => {
             questionIndex++;
             if (questionIndex < quiz.length) {
                 showQuestion();
             } else {
-                document.getElementById("app").innerHTML = `<h1>🎉 จบแล้ว!</h1><h2>คะแนนของคุณคือ ${score}/${quiz.length}</h2><button onclick="location.reload()">ทำใหม่</button>`;
+                showResult();
             }
-        }, 1000);
+        }, 1500); // ปรับเวลาเป็น 1.5 วิ ให้อ่านตัวเลือกที่ถูกได้ทัน
+    }
+
+    function showResult() {
+        const finalPercent = (score / quiz.length) * 100;
+        let evaluationText = "";
+
+        if(finalPercent >= 80) evaluationText = "ยอดเยี่ยมมากครับ! ความรู้แน่นปึกพร้อมสอบเข้ามหาวิทยาลัยแล้ว";
+        else if(finalPercent >= 50) evaluationText = "ผ่านเกณฑ์พื้นฐานครับ ทบทวนเจาะลึกเพิ่มอีกนิดคะแนนพุ่งแน่นอน!";
+        else evaluationText = "แนะนำให้กลับไปอ่านเนื้อหาเพิ่มเติมและลองฝึกทำโจทย์ใหม่อีกครั้งนะครับ!";
+
+        document.getElementById("app").innerHTML = `
+            <h1>🎉 ทำแบบทดสอบเสร็จสิ้น</h1>
+            <p>${evaluationText}</p>
+            <div class="score-circle">${score}/${quiz.length}</div>
+            <button class="btn-center" onclick="location.reload()">กลับสู่หน้าหลักเพื่อทำใหม่</button>
+        `;
     }
 </script>
+
 </body>
 </html>
