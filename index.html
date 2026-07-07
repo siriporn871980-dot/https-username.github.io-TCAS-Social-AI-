@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>TCAS Social AI</title>
 
 <style>
@@ -26,10 +27,11 @@ margin:auto;
 button{
 background:#3b82f6;
 color:white;
-padding:15px 30px;
+padding:15px 25px;
 border:none;
 border-radius:12px;
-font-size:20px;
+font-size:18px;
+margin:10px;
 cursor:pointer;
 }
 
@@ -43,15 +45,13 @@ background:#2563eb;
 
 <body>
 
-<div class="card">
+<div class="card" id="app">
 
 <h1>🏛 TCAS Social AI</h1>
 
-<h2>ยินดีต้อนรับ</h2>
+<h2>เว็บติว A-Level สังคม</h2>
 
-<p>
-เว็บติว A-Level สังคม
-</p>
+<p>ฝึกทำข้อสอบและวัดคะแนนของคุณ</p>
 
 <button onclick="startQuiz()">
 เริ่มทำข้อสอบ
@@ -59,55 +59,95 @@ background:#2563eb;
 
 </div>
 
+
 <script>
+
+let question = 0;
+let score = 0;
+
+
+let quiz = [
+
+{
+q:"ข้อใดเป็นกฎหมายสูงสุดของประเทศไทย?",
+a:["รัฐธรรมนูญ","พระราชบัญญัติ","กฎกระทรวง","ประกาศ"],
+correct:0
+},
+
+{
+q:"อำนาจอธิปไตยเป็นของใคร?",
+a:["รัฐบาล","ประชาชน","ศาล","ทหาร"],
+correct:1
+},
+
+{
+q:"เศรษฐศาสตร์ศึกษาสิ่งใด?",
+a:["การใช้ทรัพยากรที่มีจำกัด","ดวงดาว","ภาษา","ศิลปะ"],
+correct:0
+}
+
+];
+
+
 function startQuiz(){
 
-document.querySelector(".card").innerHTML = `
+showQuestion();
 
-<h1>📚 ข้อสอบ A-Level สังคม</h1>
+}
 
-<p>ข้อ 1. ข้อใดเป็นหน้าที่ของรัฐธรรมนูญ</p>
 
-<button onclick="checkAnswer(1)">ก. กำหนดสิทธิและหน้าที่ของประชาชน</button>
-<br><br>
+function showQuestion(){
 
-<button onclick="checkAnswer(0)">ข. กำหนดราคาสินค้าทุกชนิด</button>
-<br><br>
+let q = quiz[question];
 
-<button onclick="checkAnswer(0)">ค. ยกเลิกการเลือกตั้ง</button>
-<br><br>
+document.getElementById("app").innerHTML = `
 
-<button onclick="checkAnswer(0)">ง. ควบคุมความคิดประชาชน</button>
+<h1>📚 ข้อ ${question+1}</h1>
+
+<h2>${q.q}</h2>
+
+${q.a.map((x,i)=>
+`<button onclick="answer(${i})">${x}</button>`
+).join("")}
 
 `;
 
 }
 
 
-function checkAnswer(score){
+function answer(choice){
 
-if(score==1){
+if(choice==quiz[question].correct){
+score++;
+}
 
-document.querySelector(".card").innerHTML = `
-<h1>✅ ถูกต้อง!</h1>
-<p>รัฐธรรมนูญเป็นกฎหมายสูงสุดที่กำหนดโครงสร้างรัฐ สิทธิ และหน้าที่ของประชาชน</p>
-<button onclick="location.reload()">กลับหน้าหลัก</button>
+question++;
+
+if(question < quiz.length){
+
+showQuestion();
+
+}else{
+
+document.getElementById("app").innerHTML=`
+
+<h1>🎉 เสร็จสิ้น</h1>
+
+<h2>คะแนนของคุณ ${score}/${quiz.length}</h2>
+
+<button onclick="location.reload()">
+กลับหน้าแรก
+</button>
+
 `;
 
 }
 
-else{
-
-document.querySelector(".card").innerHTML = `
-<h1>❌ ผิด</h1>
-<p>ลองทบทวนเรื่องรัฐธรรมนูญอีกครั้ง</p>
-<button onclick="location.reload()">กลับหน้าหลัก</button>
-`;
-
 }
+
 
 </script>
 
-</body>
 
+</body>
 </html>
