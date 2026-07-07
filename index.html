@@ -190,3 +190,66 @@ correct:0
 }
 
 ];
+  function startQuiz(){
+
+showQuestion();
+
+}
+
+
+function showQuestion(){
+
+let q = quiz[question];
+
+document.getElementById("app").innerHTML = `
+
+<h1>📚 ข้อ ${question+1}/${quiz.length}</h1>
+
+<h2>${q.q}</h2>
+
+${q.a.map((x,i)=>
+`<button onclick="answer(${i})">${x}</button>`
+).join("")}
+
+`;
+
+}
+
+
+function answer(choice){
+
+if(choice==quiz[question].correct){
+
+score++;
+
+}
+
+question++;
+
+
+if(question < quiz.length){
+
+showQuestion();
+
+}else{
+
+document.getElementById("app").innerHTML=`
+
+<h1>🎉 เสร็จสิ้น</h1>
+
+<h2>คะแนนของคุณ ${score}/${quiz.length}</h2>
+
+<button onclick="location.reload()">
+กลับหน้าแรก
+</button>
+
+`;
+
+}
+
+}
+
+  </script>
+
+</body>
+</html>
