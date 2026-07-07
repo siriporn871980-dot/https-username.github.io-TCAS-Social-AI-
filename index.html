@@ -60,10 +60,51 @@ background:#2563eb;
 </div>
 
 <script>
-
 function startQuiz(){
 
-alert("อีกเดี๋ยวกูจะทำหน้าข้อสอบให้ 😎");
+document.querySelector(".card").innerHTML = `
+
+<h1>📚 ข้อสอบ A-Level สังคม</h1>
+
+<p>ข้อ 1. ข้อใดเป็นหน้าที่ของรัฐธรรมนูญ</p>
+
+<button onclick="checkAnswer(1)">ก. กำหนดสิทธิและหน้าที่ของประชาชน</button>
+<br><br>
+
+<button onclick="checkAnswer(0)">ข. กำหนดราคาสินค้าทุกชนิด</button>
+<br><br>
+
+<button onclick="checkAnswer(0)">ค. ยกเลิกการเลือกตั้ง</button>
+<br><br>
+
+<button onclick="checkAnswer(0)">ง. ควบคุมความคิดประชาชน</button>
+
+`;
+
+}
+
+
+function checkAnswer(score){
+
+if(score==1){
+
+document.querySelector(".card").innerHTML = `
+<h1>✅ ถูกต้อง!</h1>
+<p>รัฐธรรมนูญเป็นกฎหมายสูงสุดที่กำหนดโครงสร้างรัฐ สิทธิ และหน้าที่ของประชาชน</p>
+<button onclick="location.reload()">กลับหน้าหลัก</button>
+`;
+
+}
+
+else{
+
+document.querySelector(".card").innerHTML = `
+<h1>❌ ผิด</h1>
+<p>ลองทบทวนเรื่องรัฐธรรมนูญอีกครั้ง</p>
+<button onclick="location.reload()">กลับหน้าหลัก</button>
+`;
+
+}
 
 }
 
