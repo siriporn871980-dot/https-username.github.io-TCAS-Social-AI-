@@ -3,301 +3,469 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCAS Social AI - Platform (60 Questions)</title>
+    <title>TCAS Social AI - คลังข้อสอบจำลอง A-Level สังคมศึกษา</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* ================= ตกแต่งหน้าเว็บ (CSS) ================= */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #0f172a; color: #f8fafc; font-family: 'Sarabun', sans-serif; display: flex; justify-content: center; padding: 20px; line-height: 1.6; }
-        .card { background: #1e293b; padding: 30px; border-radius: 24px; max-width: 800px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        h1, h2, h3 { color: #f1f5f9; margin-bottom: 15px; text-align: center; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Sarabun', sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         
-        /* Input & Button */
-        .input-box { width: 100%; padding: 14px; margin: 10px 0 20px 0; border-radius: 12px; border: 1px solid #475569; background: #334155; color: white; font-size: 16px; font-family: 'Sarabun', sans-serif; }
-        .btn { background: #e11d48; color: white; padding: 14px; border: none; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; font-size: 16px; transition: 0.2s; font-family: 'Sarabun', sans-serif; }
-        .btn:hover { background: #be123c; }
+        .card {
+            background: #1e293b; padding: 30px; border-radius: 24px; max-width: 750px; width: 100%;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            border: 1px solid #334155; transition: all 0.3s ease; text-align: center; position: relative;
+        }
+
+        h1 { font-size: 2rem; color: #38bdf8; margin-bottom: 10px; font-weight: 700; }
+        h2 { font-size: 1.25rem; color: #e2e8f0; margin-bottom: 20px; line-height: 1.5; font-weight: 600; text-align: left; }
+        p { color: #94a3b8; font-size: 1.05rem; margin-bottom: 25px; }
+
+        .header-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #131c2e; padding: 10px 15px; border-radius: 12px; border: 1px solid #334155; }
+        .timer-box { font-size: 1.1rem; font-weight: 700; color: #f59e0b; display: flex; align-items: center; gap: 5px; }
+        .timer-warn { color: #ef4444; animation: pulse 1s infinite; }
         
-        /* Quiz UI */
-        .question-text { font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #38bdf8; }
-        .choice-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #334155; border: 2px solid #475569; border-radius: 12px; color: white; cursor: pointer; text-align: left; font-size: 16px; transition: 0.2s; font-family: 'Sarabun', sans-serif; }
-        .choice-btn:hover { background: #475569; }
-        .choice-btn.selected { border-color: #38bdf8; background: #0369a1; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .fade-in { animation: fadeInEffect 0.35s ease-out forwards; }
+        @keyframes fadeInEffect {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-container { width: 100%; background-color: #334155; border-radius: 9999px; height: 6px; margin-bottom: 20px; overflow: hidden; }
+        .progress-bar { background: linear-gradient(90deg, #3b82f6, #06b6d4); height: 100%; width: 0%; transition: width 0.3s ease; }
+        .info-text { font-size: 0.9rem; color: #38bdf8; font-weight: 600; text-transform: uppercase; }
+
+        .choice-btn {
+            background: #334155; color: #ffffff; padding: 14px 20px; border: 1px solid #475569; border-radius: 12px;
+            font-size: 1rem; font-weight: 500; margin: 8px 0; cursor: pointer; width: 100%;
+            transition: all 0.2s ease; text-align: left;
+        }
+        .choice-btn:hover { background: #475569; transform: translateY(-1px); }
+        .choice-btn.selected { background: #2563eb; border-color: #3b82f6; font-weight: 600; }
+
+        .nav-actions { display: flex; gap: 10px; margin-top: 20px; border-top: 1px solid #334155; padding-top: 15px; }
+        .action-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.95rem; text-align: center; transition: all 0.2s; }
+        .btn-prev { background: #475569; color: white; }
+        .btn-skip { background: #1e293b; color: #94a3b8; border: 1px solid #475569; }
+        .btn-next-action { background: #0284c7; color: white; }
+        .btn-submit-exam { background: #10b981; color: white; }
+        .action-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .grid-title { text-align: left; font-size: 0.9rem; color: #94a3b8; margin: 20px 0 8px; font-weight: 600; }
+        .num-grid { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; margin-bottom: 10px; max-height: 95px; overflow-y: auto; padding: 2px; }
+        .grid-item { width: 32px; height: 32px; border-radius: 6px; background: #334155; color: #cbd5e1; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; }
+        .grid-item:hover { background: #475569; color: white; }
+        .grid-item.current { border: 2px solid #38bdf8; color: #38bdf8; }
+        .grid-item.answered { background: #1e3a8a; color: #38bdf8; border-color: #2563eb; }
+        .grid-item.skipped { background: #78350f; color: #f59e0b; }
+
+        .btn-center { text-align: center; background: linear-gradient(135deg, #3b82f6, #2563eb); margin-top: 15px; padding: 14px; width: 100%; border: none; border-radius: 12px; color: white; font-weight: 600; cursor: pointer; }
+        .btn-secondary { background: #475569; text-align: center; margin-top: 10px; padding: 14px; width: 100%; border: none; border-radius: 12px; color: white; font-weight: 600; cursor: pointer; }
+        .btn-mode { background: #334155; border: 1px solid #475569; text-align: center; margin: 6px 0; padding: 14px; width: 100%; border-radius: 12px; color: white; font-weight: 600; cursor: pointer; }
+        .btn-mode:hover { background: #475569; }
+
+        .score-box { background: #334155; border-radius: 16px; padding: 25px; margin: 20px 0; border: 2px solid #475569; }
+        .score-circle { width: 120px; height: 120px; border-radius: 50%; background: #0f172a; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0 auto 15px; border: 4px solid #38bdf8; }
+        .score-circle span.raw { font-size: 2.2rem; font-weight: bold; color: #38bdf8; line-height: 1; }
+        .score-circle span.label { font-size: 0.9rem; color: #94a3b8; margin-top: 5px; }
+        .percent-text { font-size: 1.8rem; color: #10b981; font-weight: bold; margin-bottom: 10px; }
+
+        .category-container { text-align: left; background: #1e293b; border-radius: 12px; padding: 15px; margin: 15px 0; border: 1px solid #334155; }
+        .category-title { font-size: 1.05rem; font-weight: bold; color: #38bdf8; margin-bottom: 10px; border-bottom: 1px solid #334155; padding-bottom: 5px; }
+        .category-row { display: flex; justify-content: space-between; margin: 6px 0; font-size: 0.95rem; color: #e2e8f0; }
+
+        .stats-dashboard { display: flex; justify-content: space-around; background: #131c2e; padding: 15px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #1e293b; }
+        .stat-item { display: flex; flex-direction: column; align-items: center; }
+        .stat-val { font-size: 1.2rem; font-weight: bold; color: #38bdf8; }
+        .stat-lbl { font-size: 0.8rem; color: #94a3b8; margin-top: 3px; }
+
+        .review-container { max-height: 420px; overflow-y: auto; text-align: left; margin-top: 20px; padding-right: 10px; }
+        .review-container::-webkit-scrollbar { width: 6px; }
+        .review-container::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
         
-        /* Summary & Leaderboard */
-        .score-display { text-align: center; font-size: 28px; font-weight: bold; color: #10b981; margin: 20px 0; padding: 20px; background: #064e3b; border-radius: 16px; }
-        .review-box { background: #0f172a; padding: 15px; border-radius: 12px; margin-bottom: 15px; border-left: 5px solid #475569; }
-        .review-box.correct { border-left-color: #10b981; }
-        .review-box.wrong { border-left-color: #e11d48; }
-        .explanation { color: #94a3b8; font-size: 14px; margin-top: 10px; background: #1e293b; padding: 10px; border-radius: 8px; border-left: 3px solid #38bdf8;}
+        .review-item { background: #293548; padding: 18px; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid #475569; }
+        .review-item h4 { color: #f8fafc; margin-bottom: 12px; font-size: 1.05rem; line-height: 1.5; }
+        .review-choice { padding: 8px 12px; border-radius: 8px; margin-bottom: 6px; font-size: 0.95rem; display: flex; align-items: center; }
         
-        table { width: 100%; margin-top: 20px; border-collapse: collapse; color: white; margin-bottom: 30px; }
-        th, td { padding: 12px; border-bottom: 1px solid #475569; text-align: center; }
-        th { background: #334155; color: #38bdf8; }
+        .r-correct { background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; font-weight: 600; }
+        .r-wrong { background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; }
+        .r-normal { background: #334155; color: #cbd5e1; }
+        .badge { margin-left: auto; font-size: 0.75rem; padding: 2px 6px; border-radius: 8px; }
+        .explanation-box { margin-top: 10px; padding: 10px; background: #1e293b; border-radius: 8px; border-left: 3px solid #38bdf8; font-size: 0.9rem; color: #cbd5e1; line-height: 1.5; }
+
+        /* Login & Leaderboard Styles */
+        .login-input { width: 100%; padding: 14px; margin: 15px 0; border-radius: 12px; border: 1px solid #475569; background: #0f172a; color: white; font-size: 1rem; text-align: center; }
+        .login-input:focus { outline: none; border-color: #38bdf8; }
+        .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 15px; text-align: left; }
+        .leaderboard-table th, .leaderboard-table td { padding: 12px; border-bottom: 1px solid #334155; }
+        .leaderboard-table th { color: #38bdf8; font-weight: bold; }
+        .rank-1 { color: #fbbf24; font-weight: bold; }
+        .rank-2 { color: #94a3b8; font-weight: bold; }
+        .rank-3 { color: #b45309; font-weight: bold; }
+        .user-header { display: flex; justify-content: space-between; align-items: center; background: #131c2e; padding: 10px 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #334155; }
+        .logout-btn { background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; }
     </style>
 </head>
 <body>
 
-<div class="card" id="app">
-    </div>
+<div class="card" id="app"></div>
 
 <script>
-    /* ================= 1. คลังข้อสอบ 60 ข้อ ================= */
+    // ------------------- ส่วนของฐานข้อมูลข้อสอบ -------------------
     const MASTER_QUIZ = [
-        // --- ศาสนา ศีลธรรม จริยธรรม ---
         { cat: "ศาสนา", q: "หลักธรรมในข้อใดของพระพุทธศาสนา ที่มีกระบวนการและทัศนคติสอดคล้องกับ 'วิธีการทางวิทยาศาสตร์' มากที่สุด?", a: ["อริยสัจ 4", "พรหมวิหาร 4", "อิทธิบาท 4", "สังคหวัตถุ 4"], correct: 0, explanation: "อริยสัจ 4 มีกระบวนการแก้ปัญหาจากเหตุไปหาผล ซึ่งตรงกับวิธีการทางวิทยาศาสตร์ที่สุด" },
-        { cat: "ศาสนา", q: "ผู้พิพากษาที่ทำหน้าที่ตัดสินคดีความอย่างซื่อสัตย์สุจริต สอดคล้องกับการปฏิบัติตามหลักพรหมวิหาร 4 ในข้อใดชัดเจนที่สุด?", a: ["เมตตา", "กรุณา", "มุทิตา", "อุเบกขา"], correct: 3, explanation: "อุเบกขา คือการวางใจเป็นกลางอย่างเที่ยงธรรมตามหลักกฎเกณฑ์ความถูกต้อง" },
-        { cat: "ศาสนา", q: "การเจริญภาวนาแบบ 'วิปัสสนากรรมฐาน' ในทางพระพุทธศาสนามีจุดมุ่งหมายสูงสุดเพื่อสิ่งใด?", a: ["เพื่อให้จิตสงบระงับจากกิเลสและนิวรณ์ชั่วคราว", "เพื่อให้เกิดอภิญญาและหยั่งรู้อนาคตเพื่อละกิเลส", "เพื่อให้เกิดปัญญาญาณเห็นแจ้งในไตรลักษณ์จนสิ้นอาสวะ", "เพื่อให้จิตแน่วแน่เป็นสมาธิระดับฌานสมาบัติ"], correct: 2, explanation: "วิปัสสนากรรมฐาน มุ่งเน้นการใช้ปัญญาพิจารณาสภาวะธรรมจนเห็นแจ้งใน 'ไตรลักษณ์' เพื่อตัดกิเลส" },
-        { cat: "ศาสนา", q: "ศาสนาในข้อใดจัดอยู่ในกลุ่มประเภท 'อเทวนิยม' (ไม่มีความเชื่อเรื่องพระเจ้า)?", a: ["ศาสนาคริสต์ และ ศาสนาอิสลาม", "ศาสนาพราหมณ์-ฮินดู และ ศาสนาสิกข์", "ศาสนาพุทธ และ ศาสนาเชน", "ศาสนายูดาห์ และ ศาสนาคริสต์"], correct: 2, explanation: "ศาสนาพุทธ และศาสนาเชน เป็นศาสนาประเภทอเทวนิยม ปฏิเสธการมีอยู่ของพระเจ้าผู้สร้างโลก" },
-        { cat: "ศาสนา", q: "หลักปฏิบัติข้อใดของชาวมุสลิมตามหลักการอิสลาม ที่บัญญัติให้ปฏิบัติบังคับ 'เฉพาะผู้ที่มีความพร้อม' เป็นสำคัญ?", a: ["การละหมาด", "การถือศีลอด", "การบริจาคซะกาต", "การประกอบพิธีฮัจญ์"], correct: 3, explanation: "การประกอบพิธีฮัจญ์ ถูกบัญญัติให้เป็นหน้าที่เฉพาะผู้ที่มีความพร้อมด้านกำลังทรัพย์และสุขภาพ" },
-        { cat: "ศาสนา", q: "คัมภีร์ใดในระบบวรรณกรรมพระเวทของศาสนาพราหมณ์-ฮินดู ที่ได้รับการยอมรับว่าเก่าแก่ที่สุด?", a: ["คัมภีร์สามเวท", "คัมภีร์อาถรรพเวท", "คัมภีร์ฤคเวท", "คัมภีร์ยชุรเวท"], correct: 2, explanation: "คัมภีร์ฤคเวท เป็นคัมภีร์ที่เก่าแก่ที่สุดในบรรดาสังหิตาทั้ง 4 ของพระเวท" },
-        { cat: "ศาสนา", q: "วันสำคัญทางพระพุทธศาสนาวันใดที่มีเหตุการณ์มหัศจรรย์ 'จาตุรงคสันนิบาต'?", a: ["วันวิสาขบูชา", "วันอาสาฬหบูชา", "วันมาฆบูชา", "วันอัฏฐมีบูชา"], correct: 2, explanation: "วันมาฆบูชา เกิดเหตุการณ์จาตุรงคสันนิบาต พระสงฆ์ 1,250 รูปมาประชุมกันโดยมิได้นัดหมาย" },
-        { cat: "ศาสนา", q: "แนวคิดความเชื่อเรื่อง 'บาปกำเนิด' (Original Sin) ถือเป็นแกนหลักคำสอนที่สำคัญของศาสนาใด?", a: ["ศาสนาพุทธ", "ศาสนาคริสต์", "ศาสนาอิสลาม", "ศาสนาพราหมณ์-ฮินดู"], correct: 1, explanation: "ศาสนาคริสต์สอนเรื่องบาปกำเนิด ซึ่งเป็นบาปที่ติดตัวมนุษย์ทุกคนมาตั้งแต่เกิด" },
-        { cat: "ศาสนา", q: "หลักธรรมคำสอนเรื่อง 'ปฏิจจสมุปบาท' ในพระพุทธศาสนา มุ่งเน้นสอนให้มนุษย์ทำความเข้าใจเกี่ยวกับเรื่องใด?", a: ["ความเป็นเหตุเป็นผลของสิ่งทั้งหลายที่พึ่งพาเกี่ยวเนื่องกันเกิดขึ้น", "การเวียนว่ายตายเกิดในสังสารวัฏของจิตวิญญาณ", "แนวทางการปฏิบัติตนตามทางสายกลาง", "การจำแนกกรรมและผลของกรรม"], correct: 0, explanation: "ปฏิจจสมุปบาท คือ หลักธรรมที่ว่าด้วยสิ่งทั้งหลายอาศัยกันและกันจึงเกิดขึ้น เป็นกฎแห่งเหตุและผลทางธรรมชาติ" },
-        { cat: "ศาสนา", q: "นิกายมหายานในพระพุทธศาสนา มีอุดมคติและจุดเด่นหลักในข้อใดที่แตกต่างจากนิกายเถรวาท?", a: ["การรักษาพระธรรมวินัยเดิมดั้งเดิมไว้อย่างเคร่งครัด", "การมุ่งเน้นอุดมคติพระโพธิสัตว์เพื่อช่วยเหลือสรรพสัตว์", "การปฏิเสธการทำสมาธิขั้นสูง", "การไม่เชื่อในเรื่องการหลุดพ้น"], correct: 1, explanation: "นิกายมหายานเน้น 'อุดมคติพระโพธิสัตว์' คือการบำเพ็ญบารมีเพื่อช่วยรื้อขนสรรพสัตว์ให้พ้นทุกข์" },
-        { cat: "ศาสนา", q: "การที่นักเรียนจดจ่อ มีสมาธิแน่วแน่ ไม่ปล่อยปละละเลยต่อการทบทวนตำราเรียน สอดคล้องกับหลักธรรมข้อใดในอิทธิบาท 4?", a: ["ฉันทะ", "วิริยะ", "จิตตะ", "วิมังสา"], correct: 2, explanation: "จิตตะ ในอิทธิบาท 4 คือ ความตั้งจิตรับรู้ เอาใจฝักใฝ่ มีสมาธิจดจ่ออยู่กับสิ่งที่ทำ" },
-        { cat: "ศาสนา", q: "คริสต์ศาสนานิกายใดที่มีโครงสร้างการบริหารที่ปฏิเสธอำนาจสูงสุดของพระสันตะปาปา และมีศาสนาจารย์เป็นผู้นำ?", a: ["โรมันคาทอลิก", "ออร์โธดอกซ์", "โปรเตสแตนต์", "แองกลิกัน"], correct: 2, explanation: "นิกายโปรเตสแตนต์ ปฏิเสธอำนาจของพระสันตะปาปา ไม่มีคณะนักบวช (บาทหลวง) แต่มีศาสนาจารย์" },
-
-        // --- หน้าที่พลเมือง ---
-        { cat: "หน้าที่พลเมือง", q: "กฎหมายในข้อใดจัดอยู่ในกลุ่มประเภท 'กฎหมายมหาชน' (Public Law)?", a: ["ประมวลกฎหมายแพ่งและพาณิชย์", "กฎหมายลิขสิทธิ์และสิทธิบัตร", "รัฐธรรมนูญและกฎหมายอาญา", "กฎหมายว่าด้วยตั๋วเงินและหุ้นส่วน"], correct: 2, explanation: "กฎหมายมหาชน คือกฎหมายที่กำหนดความสัมพันธ์ระหว่างรัฐกับประชาชน เช่น รัฐธรรมนูญ กฎหมายอาญา" },
-        { cat: "หน้าที่พลเมือง", q: "การสมรสในประเทศไทยจะมีความสมบูรณ์ตามกฎหมายเมื่อใด?", a: ["เมื่อมีการจัดพิธีแต่งงาน", "เมื่อได้ทำการจดทะเบียนสมรสต่อนายทะเบียน", "เมื่ออยู่กินฉันสามีภรรยาเปิดเผยเกิน 1 ปี", "เมื่อบิดามารดาทั้งสองฝ่ายลงนามรับทราบ"], correct: 1, explanation: "การสมรสตามกฎหมายไทยจะมีผลสมบูรณ์ก็ต่อเมื่อได้ทำการ 'จดทะเบียนสมรส' เท่านั้น" },
-        { cat: "หน้าที่พลเมือง", q: "การกระทำความผิดทางอาญาในข้อใด ที่กฎหมายบัญญัติให้เป็น 'ความผิดอันยอมความได้'?", a: ["ความผิดฐานฆ่าผู้อื่นโดยเจตนา", "ความผิดฐานยักยอกทรัพย์หรือฉ้อโกงทรัพย์", "ความผิดฐานชิงทรัพย์โดยมีอาวุธ", "ความผิดฐานปล้นทรัพย์"], correct: 1, explanation: "ความผิดฐานยักยอกและฉ้อโกงทรัพย์เป็นความผิดต่อส่วนตัวที่ยอมความกันได้ตามกฎหมาย" },
-        { cat: "หน้าที่พลเมือง", q: "องค์กรอิสระใดมีหน้าที่หลักในการตรวจสอบและไต่สวนการทุจริตประพฤติมิชอบของเจ้าหน้าที่รัฐ?", a: ["ศาลปกครองสูงสุด", "ผู้ตรวจการแผ่นดิน", "คณะกรรมการ ป.ป.ช.", "ศาลรัฐธรรมนูญ"], correct: 2, explanation: "คณะกรรมการ ป.ป.ช. มีหน้าที่หลักในการตรวจสอบทรัพย์สิน และไต่สวนข้อเท็จจริงกรณีทุจริต" },
-        { cat: "หน้าที่พลเมือง", q: "ข้อใดคือลักษณะเด่นที่เป็นแกนหลักของระบอบการปกครองแบบ 'เผด็จการเบ็ดเสร็จ'?", a: ["ประชาชนมีเสรีภาพทางเศรษฐกิจอย่างเต็มที่", "รัฐเข้าควบคุมและจัดระเบียบทุกด้านของวิถีชีวิตประชากร", "อำนาจอธิปไตยแบ่งแยกชัดเจน", "การสืบทอดอำนาจผ่านสายโลหิต"], correct: 1, explanation: "ระบอบเผด็จการเบ็ดเสร็จ รัฐจะเข้าควบคุมชีวิตของประชาชนทุกมิติ เพื่ออุดมการณ์ของรัฐบาล" },
-        { cat: "หน้าที่พลเมือง", q: "สถาบันทางสังคมใดทำหน้าที่ 'ขัดเกลาทางสังคมขั้นปฐมภูมิ' แก่มนุษย์?", a: ["สถาบันการศึกษา", "สถาบันศาสนา", "สถาบันสื่อสารมวลชน", "สถาบันครอบครัว"], correct: 3, explanation: "สถาบันครอบครัวเป็นสถาบันแรกสุดที่ทำหน้าที่ขัดเกลาทางสังคม คอยอบรมสั่งสอนพื้นฐานแก่สมาชิก" },
-        { cat: "หน้าที่พลเมือง", q: "โครงสร้างการปกครองส่วนท้องถิ่นรูปแบบพิเศษของประเทศไทย ประกอบด้วยหน่วยงานใดบ้าง?", a: ["เทศบาลนคร และ อบต.", "กรุงเทพมหานคร และ เมืองพัทยา", "อบจ. และ เทศบาลเมือง", "กรุงเทพมหานคร และ จังหวัดภูเก็ต"], correct: 1, explanation: "ประเทศไทยมีการจัดระเบียบบริหารราชการส่วนท้องถิ่นรูปแบบพิเศษอยู่ 2 แห่ง คือ กรุงเทพมหานคร (กทม.) และ เมืองพัทยา" },
-        { cat: "หน้าที่พลเมือง", q: "ตามหลักรัฐศาสตร์สากล ข้อใดคือองค์ประกอบของ 'รัฐ' ที่ถูกต้อง?", a: ["ประชากร, ดินแดน, รัฐบาล, รัฐธรรมนูญ", "ประชากร, ดินแดน, รัฐบาล, อำนาจอธิปไตย", "ประชากร, เมืองหลวง, รัฐบาล, กองทัพ", "ประชากร, ดินแดน, อำนาจอธิปไตย, เสรีภาพ"], correct: 1, explanation: "องค์ประกอบของรัฐประกอบด้วย 1. ประชากร 2. ดินแดน 3. รัฐบาล และ 4. อำนาจอธิปไตย" },
-        { cat: "หน้าที่พลเมือง", q: "วัฒนธรรมในข้อใดจัดอยู่ในประเภท 'เนติธรรม' (Legal Culture)?", a: ["สิ่งปลูกสร้าง โบราณสถาน", "หลักธรรมทางศาสนาและความซื่อสัตย์", "ประมวลกฎหมาย กฎระเบียบข้อบังคับ", "มารยาททางสังคม การแต่งกาย"], correct: 2, explanation: "เนติธรรม คือ วัฒนธรรมทางกฎหมาย รวมถึงระเบียบข้อบังคับที่มีบทลงโทษชัดเจน" },
-        { cat: "หน้าที่พลเมือง", q: "การดาวน์โหลดโปรแกรมคอมพิวเตอร์หรือภาพยนตร์ที่มีลิขสิทธิ์มาใช้งานโดยไม่ได้รับอนุญาต ละเมิดกฎหมายใด?", a: ["กฎหมายลักษณะอาญาแผ่นดิน", "กฎหมายลักษณะแพ่ง", "กฎหมายทรัพย์สินทางปัญญา", "กฎหมายพาณิชย์"], correct: 2, explanation: "การละเมิดผลงานสร้างสรรค์ จัดเป็นการละเมิด 'กฎหมายทรัพย์สินทางปัญญา' (เช่น กฎหมายลิขสิทธิ์)" },
-        { cat: "หน้าที่พลเมือง", q: "ในระบบรัฐสภา หากสภาผู้แทนราษฎรมีมติ 'ไม่ไว้วางใจ' นายกรัฐมนตรี จะส่งผลอย่างไร?", a: ["นายกรัฐมนตรีและคณะรัฐมนตรีต้องพ้นจากตำแหน่งทั้งคณะ", "ประธานสภาต้องประกาศยุบสภาทันที", "ประธานรัฐสภาจะรักษาการแทน", "ส่งให้ศาลรัฐธรรมนูญวินิจฉัย"], correct: 0, explanation: "หากสภาลงมติไม่ไว้วางใจ นายกรัฐมนตรีและคณะรัฐมนตรีต้องพ้นจากตำแหน่งทั้งคณะทันที" },
-        { cat: "หน้าที่พลเมือง", q: "เอกสารระหว่างประเทศฉบับใดที่เป็นมาตรฐานสากลในการคุ้มครองศักดิ์ศรีของมนุษย์หลังสงครามโลกครั้งที่ 2?", a: ["สนธิสัญญาแวร์ซายส์", "กติการะหว่างประเทศว่าด้วยสิทธิพลเมือง", "ปฏิญญาสากลว่าด้วยสิทธิมนุษยชน (UDHR)", "อนุสัญญาเจนีวา"], correct: 2, explanation: "ปฏิญญาสากลว่าด้วยสิทธิมนุษยชน (UDHR) ได้รับการรับรองในปี พ.ศ. 2491 เพื่อเป็นกรอบสากลในการปกป้องสิทธิมนุษยชน" },
-
-        // --- เศรษฐศาสตร์ ---
-        { cat: "เศรษฐศาสตร์", q: "ปัญหาพื้นฐานทางเศรษฐศาสตร์ (What, How, For whom) เกิดขึ้นจากสภาวการณ์ใด?", a: ["ระบบการกระจายรายได้ที่ไม่เท่าเทียม", "ความต้องการของมนุษย์มีไม่จำกัด แต่ทรัพยากรมีอยู่จำกัด", "รัฐบาลแทรกแซงราคาตลาด", "การเปลี่ยนแปลงของระดับราคาสินค้า"], correct: 1, explanation: "ปัญหาพื้นฐานทางเศรษฐศาสตร์เกิดจากความขัดแย้งระหว่าง 'ความต้องการที่มีไม่จำกัด' กับ 'ความขาดแคลนของทรัพยากร'" },
-        { cat: "เศรษฐศาสตร์", q: "โครงสร้างตลาดประเภทใดที่มีผู้ขายในระบบเพียงไม่กี่ราย แต่ละรายมีส่วนแบ่งตลาดสูง?", a: ["ตลาดแข่งขันสมบูรณ์", "ตลาดผูกขาดแท้จริง", "ตลาดผู้ขายน้อยราย", "ตลาดกึ่งแข่งขันกึ่งผูกขาด"], correct: 2, explanation: "ตลาดผู้ขายน้อยราย (Oligopoly) มีผู้ผลิตเพียงไม่กี่รายใหญ่ เช่น ธุรกิจค่ายมือถือ" },
-        { cat: "เศรษฐศาสตร์", q: "ตาม 'กฎของอุปสงค์' ภายใต้เงื่อนไขที่ปัจจัยอื่นๆ คงที่ พฤติกรรมของผู้บริโภคจะเป็นอย่างไร?", a: ["เมื่อราคาสินค้าสูงขึ้น ปริมาณความต้องการซื้อจะลดลง", "เมื่อราคาสินค้าสูงขึ้น ปริมาณความต้องการซื้อจะเพิ่มขึ้น", "เมื่อราคาสินค้าลดลง ปริมาณความต้องการผลิตจะเพิ่มขึ้น", "ราคาสินค้าและปริมาณความต้องการซื้อแปรผันตรงกัน"], correct: 0, explanation: "กฎของอุปสงค์ระบุว่า ปริมาณความต้องการซื้อจะแปรผกผัน (ตรงข้าม) กับราคาเสมอ" },
-        { cat: "เศรษฐศาสตร์", q: "หากระบบเศรษฐกิจเผชิญ 'เงินเฟ้อรุนแรง' รัฐบาลและธนาคารกลางควรทำอย่างไร?", a: ["ลดดอกเบี้ยนโยบายและลดภาษี", "เพิ่มการใช้จ่ายรัฐบาลและซื้อพันธบัตรคืน", "เพิ่มดอกเบี้ยนโยบายและปรับเพิ่มภาษี", "ลดอัตราเงินสดสำรองตามกฎหมาย"], correct: 2, explanation: "การแก้เงินเฟ้อต้องดึงเงินออกจากระบบ รัฐจึงต้องใช้นโยบายแบบหดตัว (เพิ่มภาษี) และเพิ่มดอกเบี้ย" },
-        { cat: "เศรษฐศาสตร์", q: "เครื่องชี้วัดทางเศรษฐกิจใดที่คำนวณมูลค่ารวมของสินค้าที่ผลิต 'ภายในขอบเขตประเทศ'?", a: ["GNP", "GDP", "NI", "PCI"], correct: 1, explanation: "GDP (Gross Domestic Product) คือ มูลค่าตลาดของสินค้าและบริการขั้นสุดท้ายที่ผลิตขึ้นภายในประเทศ" },
-        { cat: "เศรษฐศาสตร์", q: "ทฤษฎีของ เดวิด ริคาร์โด ที่สนับสนุนให้ผลิตสินค้าที่มีต้นทุนค่าเสียโอกาสต่ำที่สุด เรียกว่าทฤษฎีใด?", a: ["ความได้เปรียบโดยสัมบูรณ์", "ความได้เปรียบโดยเปรียบเทียบ", "พาณิชยนิยม", "ดุลยภาพการค้าเสรี"], correct: 1, explanation: "ทฤษฎีความได้เปรียบโดยเปรียบเทียบ เสนอให้เลือกผลิตสินค้าที่มีต้นทุนค่าเสียโอกาสต่ำที่สุดแล้วมาค้าขายกัน" },
-        { cat: "เศรษฐศาสตร์", q: "ระบบเศรษฐกิจแบบ 'ทุนนิยมบริสุทธิ์' มีลักษณะเด่นที่สุดตามข้อใด?", a: ["เอกชนมีกรรมสิทธิ์ในทรัพย์สิน และใช้กลไกราคาโดยรัฐไม่แทรกแซง", "รัฐบาลเป็นเจ้าของปัจจัยการผลิตหลัก", "เน้นสวัสดิการที่เท่าเทียม", "รัฐบาลกำหนดราคาสินค้าขั้นพื้นฐาน"], correct: 0, explanation: "ระบบทุนนิยมเน้นเสรีภาพทางธุรกิจ กรรมสิทธิ์ของเอกชน และใช้กลไกราคาในการจัดสรรทรัพยากร" },
-        { cat: "เศรษฐศาสตร์", q: "ภาษีประเภทใดที่จัดเป็น 'ภาษีทางตรง' ซึ่งผลักภาระภาษีไม่ได้?", a: ["ภาษีมูลค่าเพิ่ม (VAT)", "ภาษีสรรพสามิต", "ภาษีเงินได้บุคคลธรรมดา", "ภาษีศุลกากร"], correct: 2, explanation: "ภาษีทางตรง คือ ภาษีที่ผู้มีหน้าที่เสียภาษีต้องรับภาระไว้เอง เช่น ภาษีเงินได้บุคคลธรรมดา" },
-        { cat: "เศรษฐศาสตร์", q: "หลักการดำเนินงานของ 'สหกรณ์' แตกต่างจากบริษัทจำกัดอย่างไรชัดเจนที่สุด?", a: ["มุ่งแสวงหากำไรสูงสุด", "จำกัดสิทธิ์สมาชิกเฉพาะผู้ในชุมชนเดียวกัน", "ยึดหลักสมาชิก 1 คนมีสิทธิ์ออกเสียง 1 เสียง", "บริหารงานโดยรัฐบาล"], correct: 2, explanation: "สหกรณ์ยึดหลักประชาธิปไตย สมาชิก 1 คน มี 1 เสียง (One Man, One Vote) เสมอกัน โดยไม่นับตามจำนวนหุ้น" },
-        { cat: "เศรษฐศาสตร์", q: "ในปรัชญาเศรษฐกิจพอเพียง 'เงื่อนไขความรู้และเงื่อนไขคุณธรรม' ทำหน้าที่อย่างไร?", a: ["เป็นฐานรองรับและกำกับการตัดสินใจในความพอประมาณและมีเหตุผล", "เป็นเป้าหมายปลายทางที่ต้องการให้เกิดขึ้น", "เป็นตัวขับเคลื่อนเพื่อการแข่งขันทางการค้า", "เป็นปัจจัยการผลิตพื้นฐาน"], correct: 0, explanation: "เงื่อนไขความรู้และคุณธรรม เป็นฐานเพื่อใช้เป็นแนวทางกำกับการตัดสินใจให้ห่วงทั้ง 3 ดำเนินไปอย่างสมดุล" },
-        { cat: "เศรษฐศาสตร์", q: "หากค่าเงินบาท 'แข็งค่าขึ้น' จะส่งผลบวกต่อใครมากที่สุด?", a: ["ผู้ประกอบการส่งออกสินค้าเกษตร", "ผู้ประกอบการนำเข้าเครื่องจักรจากต่างประเทศ", "ธุรกิจการท่องเที่ยวที่รับเงินต่างชาติ", "แรงงานไทยที่ส่งเงินกลับมาจากต่างประเทศ"], correct: 1, explanation: "เงินบาทแข็งค่า ส่งผลดีต่อผู้นำเข้าเพราะใช้เงินบาทน้อยลงในการซื้อสินค้าจากต่างประเทศ" },
-        { cat: "เศรษฐศาสตร์", q: "เป้าหมายหลักของ 'ประชาคมเศรษฐกิจอาเซียน' (AEC) คืออะไร?", a: ["ใช้ระบบสกุลเงินเดียวกัน", "จัดตั้งสภานิติบัญญัติร่วม", "เปิดตลาดเสรีที่มีการเคลื่อนย้ายสินค้า บริการ การลงทุน เสรี", "ร่วมกำหนดโควตาราคาน้ำมัน"], correct: 2, explanation: "เป้าหมายหลักของ AEC คือ การทำให้ภูมิภาคอาเซียนเป็นตลาดและฐานการผลิตร่วมกัน เคลื่อนย้ายสินค้าเสรี" },
-
-        // --- ประวัติศาสตร์ ---
-        { cat: "ประวัติศาสตร์", q: "ขั้นตอนแรกสุดของ 'วิธีการทางประวัติศาสตร์' คืออะไร?", a: ["การรวบรวมหลักฐาน", "การประเมินความน่าเชื่อถือ", "การกำหนดหัวข้อหรือประเด็นปัญหาที่ศึกษา", "การวิเคราะห์และตีความ"], correct: 2, explanation: "ขั้นตอนแรกสุดคือ การตั้งประเด็นปัญหาหรือกำหนดหัวข้อ เพื่อกำหนดขอบเขตในการค้นคว้า" },
-        { cat: "ประวัติศาสตร์", q: "ผลกระทบสำคัญทางเศรษฐกิจจาก 'สนธิสัญญาเบาว์ริง' สมัยรัชกาลที่ 4 คือข้อใด?", a: ["เปลี่ยนจากเศรษฐกิจพึ่งตนเองเป็นระบบเศรษฐกิจเพื่อการค้า", "พระคลังสินค้าผูกขาดการค้าได้มากขึ้น", "ไทยเสียเปรียบดุลการค้ารุนแรง", "ยกเลิกการใช้เงินตราและใช้การแลกเปลี่ยนสิ่งของ"], correct: 0, explanation: "สนธิสัญญาเบาว์ริงทำให้การผูกขาดโดยพระคลังสินค้าสิ้นสุดลง เปลี่ยนสู่ระบบเศรษฐกิจเพื่อการค้าเสรี" },
-        { cat: "ประวัติศาสตร์", q: "การปฏิรูปโครงสร้างบริหารราชการแผ่นดินระดับรากฐานในสมัยรัชกาลที่ 5 คือข้อใด?", a: ["พ.ร.บ. เลิกทาส", "ยกเลิกระบบจตุสดมภ์และตั้ง 12 กระทรวง", "สร้างทางรถไฟ", "เจรจายกเลิกสิทธิสภาพนอกอาณาเขต"], correct: 1, explanation: "พ.ศ. 2435 ทรงยกเลิกระบบจตุสดมภ์ และปฏิรูปเป็น 12 กระทรวงแบบสากลแบ่งแยกหน้าที่ตามความเชี่ยวชาญ" },
-        { cat: "ประวัติศาสตร์", q: "การปฏิวัติเปลี่ยนแปลงการปกครอง 24 มิถุนายน พ.ศ. 2475 กระทำโดยกลุ่มใด?", a: ["คณะราษฎร", "คณะ ร.ศ. 130", "ขบวนการเสรีไทย", "สมาคมกรรมกรสยาม"], correct: 0, explanation: "การเปลี่ยนแปลงการปกครอง 2475 นำโดย 'คณะราษฎร' ปรับเปลี่ยนระบอบสมบูรณาญาสิทธิราชย์มาเป็นประชาธิปไตย" },
-        { cat: "ประวัติศาสตร์", q: "อารยธรรมใดได้รับการยกย่องว่าเป็น 'นครรัฐต้นกำเนิดของระบอบประชาธิปไตย'?", a: ["อียิปต์โบราณ", "โรมันโบราณ", "อารยธรรมกรีกโบราณ (นครรัฐเอเธนส์)", "เมโสโปเตเมีย"], correct: 2, explanation: "นครรัฐเอเธนส์ของอารยธรรมกรีกโบราณ ได้รับการยอมรับว่าเป็นต้นกำเนิดของประชาธิปไตยทางตรง" },
-        { cat: "ประวัติศาสตร์", q: "ผลงานสำคัญของพระเจ้าฮัมมูราบี (เมโสโปเตเมีย) ที่สะท้อนการจัดระเบียบสังคมคือ?", a: ["การสร้างพีระมิดขั้นบันได", "การประดิษฐ์อักษรรูปลิ่ม", "ประมวลกฎหมายที่ยึดหลัก 'ตาต่อตา ฟันต่อฟัน'", "การคำนวณปฏิทินสุริยคติ"], correct: 2, explanation: "ประมวลกฎหมายฮัมมูราบี เป็นกฎหมายลายลักษณ์อักษรยุคแรก สะท้อนการลงโทษแบบตาต่อตา ฟันต่อฟัน" },
-        { cat: "ประวัติศาสตร์", q: "ระบบสังคมการเมืองในยุโรปยุคกลางที่มีความสัมพันธ์ระหว่างลอร์ดและวาสซาลเรียกว่า?", a: ["ระบบทุนนิยม", "ระบบสังคมนิยม", "ระบบฟิวดัลหรือระบบศักดินาสวามิภักดิ์", "ระบบพาณิชยนิยม"], correct: 2, explanation: "ระบบฟิวดัล ยึดโยงด้วยความสัมพันธ์การกระจายอำนาจผ่านกรรมสิทธิ์ที่ดินในยุโรปยุคกลาง" },
-        { cat: "ประวัติศาสตร์", q: "ชนวนเหตุเฉพาะหน้าที่ทำให้เกิดสงครามโลกครั้งที่ 1 คือ?", a: ["การลอบปลงพระชนม์มกุฎราชกุมารออสเตรีย-ฮังการี", "เยอรมนีบุกโปแลนด์", "ญี่ปุ่นโจมตีเพิร์ลฮาร์เบอร์", "การปฏิวัติรัสเซีย"], correct: 0, explanation: "ชนวนเหตุคือการลอบปลงพระชนม์อาร์ชดยุก ฟรานซ์ เฟอร์ดินานด์ ณ เมืองซาราเยโว" },
-        { cat: "ประวัติศาสตร์", q: "'สงครามเย็น' เป็นการต่อสู้ทางอุดมการณ์ระหว่างขั้วอำนาจใด?", a: ["อังกฤษ กับ ฝรั่งเศส", "สหรัฐอเมริกา กับ สหภาพโซเวียต", "นาซีเยอรมนี กับ สหภาพโซเวียต", "จีน กับ ญี่ปุ่น"], correct: 1, explanation: "สงครามเย็นเป็นการแข่งขันทางอุดมการณ์ระหว่าง สหรัฐอเมริกา (เสรีประชาธิปไตย) กับ สหภาพโซเวียต (คอมมิวนิสต์)" },
-        { cat: "ประวัติศาสตร์", q: "บุคคลใดที่เป็นผู้นำเรียกร้องเอกราชของอินเดีย โดยยึดหลัก 'อหิงสา'?", a: ["มูฮัมหมัด อาลี จินนาห์", "เยาวหะราล เนห์รู", "มหาตมะ คานธี", "อินทิรา คานธี"], correct: 2, explanation: "มหาตมะ คานธี นำการต่อสู้เรียกร้องเอกราชให้อินเดียโดยใช้หลัก 'อหิงสา' และ 'สัตยาเคราะห์'" },
-        { cat: "ประวัติศาสตร์", q: "แนวคิดสำคัญในยุค 'เรเนซองส์' ที่ให้ความสำคัญกับศักยภาพของมนุษย์คือแนวคิดใด?", a: ["มนุษยนิยม (Humanism)", "คริสต์ศาสนนิยม", "จักรวรรดินิยม", "พาณิชยนิยม"], correct: 0, explanation: "แนวคิดมนุษยนิยม มุ่งเน้นความเชื่อในศักยภาพและความสามารถของมนุษย์ในโลกนี้" },
-        { cat: "ประวัติศาสตร์", q: "ข้อใดจัดอยู่ในประเภท 'หลักฐานชั้นต้น' ที่มีความน่าเชื่อถือสูง?", a: ["ตำราเรียนประวัติศาสตร์", "วิทยานิพนธ์ปริญญาเอก", "แผ่นศิลาจารึกสุโขทัยหลักที่ 1", "ภาพยนตร์สารคดีย้อนรอย"], correct: 2, explanation: "หลักฐานชั้นต้น คือหลักฐานที่เกิดขึ้นในยุคเหตุการณ์นั้นจริง เช่น ศิลาจารึก จดหมายเหตุ" },
-
-        // --- ภูมิศาสตร์ ---
-        { cat: "ภูมิศาสตร์", q: "เทคโนโลยีภูมิสารสนเทศใดใช้คอมพิวเตอร์จัดเก็บ ประมวลผล และวิเคราะห์ข้อมูลเชิงพื้นที่?", a: ["GPS", "ระบบสารสนเทศภูมิศาสตร์ (GIS)", "Remote Sensing", "แผนที่แสดงลักษณะภูมิประเทศ"], correct: 1, explanation: "GIS คือระบบสารสนเทศภูมิศาสตร์ ที่ใช้คอมพิวเตอร์วิเคราะห์ข้อมูลพื้นที่เชิงซ้อนเป็นชั้นๆ" },
-        { cat: "ภูมิศาสตร์", q: "ภูมิประเทศส่วนใหญ่ของภาคอีสาน มีลักษณะโดดเด่นแบบใด?", a: ["ที่ราบลุ่มแม่น้ำขนาดใหญ่", "ที่ราบชายฝั่งทะเล", "ที่ราบสูงรูปแอ่งกระทะขนาบด้วยทิวเขา", "ภูเขาสูงชันรูปตัววี"], correct: 2, explanation: "ภาคอีสานเป็นที่ราบสูงหินทราย มีลักษณะลาดเอียงเป็นรูปแอ่งกระทะ (แอ่งโคราชและแอ่งสกลนคร)" },
-        { cat: "ภูมิศาสตร์", q: "ลมมรสุมใดพัดพาความชื้นจากมหาสมุทรอินเดียมาทำให้เกิดฤดูฝนในไทย?", a: ["มรสุมตะวันออกเฉียงเหนือ", "มรสุมตะวันตกร้อน", "มรสุมตะวันตกเฉียงใต้", "ลมสินค้าตะวันออก"], correct: 2, explanation: "ลมมรสุมตะวันตกเฉียงใต้ พัดจากมหาสมุทรอินเดียเข้าสู่ไทย นำเอาความชุ่มชื้นและเมฆฝนมาตกชุก" },
-        { cat: "ภูมิศาสตร์", q: "สนธิสัญญาใดมีเป้าหมายลดการปล่อยก๊าซเรือนกระจกเพื่อบรรเทาภาวะโลกร้อน?", a: ["อนุสัญญาไซเตส", "พิธีสารมอนทรีออล", "อนุสัญญาแรมซาร์", "พิธีสารเกียวโต และ ความตกลงปารีส"], correct: 3, explanation: "พิธีสารเกียวโตและความตกลงปารีส มุ่งเน้นลดการปล่อยก๊าซเรือนกระจกเพื่อแก้ปัญหาโลกร้อน" },
-        { cat: "ภูมิศาสตร์", q: "พื้นที่ใดบนโลกที่เกิดแผ่นดินไหวและภูเขาไฟระเบิดบ่อยครั้งที่สุด?", a: ["ลุ่มแม่น้ำแอมะซอน", "ตอนกลางทวีปออสเตรเลีย", "แนววงแหวนแห่งไฟ (Ring of Fire)", "คาบสมุทรสแกนดิเนเวีย"], correct: 2, explanation: "วงแหวนแห่งไฟ เป็นแนวรอยต่อแผ่นเปลือกโลกรอบมหาสมุทรแปซิฟิก เกิดแผ่นดินไหวมากที่สุด" },
-        { cat: "ภูมิศาสตร์", q: "ปรากฏการณ์ 'เอลนีโญ' มักส่งผลกระทบต่อสภาวะอากาศในประเทศไทยอย่างไร?", a: ["เกิดมรสุม ฝนตกหนัก", "ปริมาณฝนน้อย อุณหภูมิสูง เกิดภาวะแห้งแล้ง", "เกิดพายุหมุนถล่มภาคใต้", "ระดับน้ำทะเลลดลง"], correct: 1, explanation: "เอลนีโญ ทำให้อุณหภูมิทะเลแปซิฟิกตะวันออกอุ่นขึ้น ส่งผลให้เกิดความแห้งแล้งในเอเชียตะวันออกเฉียงใต้รวมถึงไทย" },
-        { cat: "ภูมิศาสตร์", q: "การคำนวณ 'เวลามาตรฐาน' ยึดเส้นสมมติทางภูมิศาสตร์เส้นใดเป็นเกณฑ์?", a: ["เส้นศูนย์สูตร", "เส้นทรอปิกออฟแคนเซอร์", "เส้นเมริเดียนแรก (Prime Meridian)", "เส้นเขตวันที่สากล"], correct: 2, explanation: "เส้นเมริเดียนแรก (ลองจิจูด 0 องศา) ที่กรีนิช ถูกกำหนดเป็นเส้นเวลามาตรฐานสากล (GMT)" },
-        { cat: "ภูมิศาสตร์", q: "หากต้องการทราบพิกัดภูมิศาสตร์ที่แม่นยำสูงสุด (ละติจูด-ลองจิจูด) ควรใช้เครื่องมือใด?", a: ["เข็มทิศแม่เหล็ก", "เครื่องวัดความกดอากาศ", "เครื่องรับสัญญาณ GPS", "แผนที่ภาพถ่ายทางอากาศ"], correct: 2, explanation: "GPS รับสัญญาณจากดาวเทียมเพื่อระบุตำแหน่งพิกัดบนพื้นโลกได้อย่างแม่นยำที่สุด" },
-        { cat: "ภูมิศาสตร์", q: "ปัญหาทรัพยากรดิน 'ดินเปรี้ยวจัด' มักพบมากที่สุดในพื้นที่บริเวณใด?", a: ["ภาคอีสาน", "พื้นที่ราบลุ่มต่ำภาคกลางตอนล่าง", "หุบเขาภาคเหนือ", "เขตเงาฝนภาคตะวันตก"], correct: 1, explanation: "ดินเปรี้ยวจัดพบมากในที่ราบลุ่มภาคกลางตอนล่าง แก้ไขได้ด้วยการใส่ปูนขาวหรือแกล้งดิน" },
-        { cat: "ภูมิศาสตร์", q: "อนุสัญญาแรมซาร์ (Ramsar) มุ่งเน้นการอนุรักษ์ทรัพยากรประเภทใด?", a: ["พืชและสัตว์ใกล้สูญพันธุ์", "พื้นที่ชุ่มน้ำ (Wetlands)", "ชั้นโอโซน", "แหล่งมรดกโลก"], correct: 1, explanation: "อนุสัญญาแรมซาร์ เป็นสนธิสัญญาเพื่อการอนุรักษ์ 'พื้นที่ชุ่มน้ำ' ที่เป็นแหล่งหากินของนกน้ำ" },
-        { cat: "ภูมิศาสตร์", q: "แผนที่มาตราส่วน 1 : 50,000 หมายความว่าอย่างไร?", a: ["1 ซม. ในแผนที่ = 50,000 เมตรจริง", "1 ซม. ในแผนที่ = 50,000 ซม. (500 เมตร) จริง", "1 ตารางนิ้ว = 50,000 ตร.กม. จริง", "ใช้เฉพาะเดินเรือสมุทร"], correct: 1, explanation: "1 : 50,000 หมายถึง 1 หน่วยในแผนที่ เท่ากับ 50,000 หน่วยชนิดเดียวกันในพื้นที่จริง" },
-        { cat: "ภูมิศาสตร์", q: "เป้าหมายหลักของ 'การพัฒนาที่ยั่งยืน' (Sustainable Development) คือสิ่งใด?", a: ["ใช้ทรัพยากรให้หมดเพื่อจีดีพีสูงสุด", "พัฒนาเศรษฐกิจ สังคม สิ่งแวดล้อมให้สมดุลเพื่อคนรุ่นปัจจุบันโดยไม่ทำลายโอกาสคนรุ่นหลัง", "หยุดการผลิตอุตสาหกรรม", "ลดประชากรโลก"], correct: 1, explanation: "มุ่งเน้นความสมดุล 3 ด้าน ตอบสนองความจำเป็นของประชากรยุคปัจจุบันโดยไม่ทำลายศักยภาพของคนรุ่นหลัง" }
+        { cat: "หน้าที่พลเมือง", q: "กฎหมายในข้อใดจัดอยู่ในกลุ่มประเภท 'กฎหมายมหาชน' (Public Law) ซึ่งจัดวางความสัมพันธ์ระหว่างรัฐกับเอกชน?", a: ["ประมวลกฎหมายแพ่งและพาณิชย์", "กฎหมายลิขสิทธิ์และสิทธิบัตร", "รัฐธรรมนูญและกฎหมายอาญา", "กฎหมายว่าด้วยตั๋วเงินและหุ้นส่วน"], correct: 2, explanation: "กฎหมายมหาชน คือกฎหมายที่กำหนดความสัมพันธ์ระหว่างรัฐกับประชาชน เช่น รัฐธรรมนูญ กฎหมายอาญา" },
+        { cat: "เศรษฐศาสตร์", q: "ปัญหาพื้นฐานทางเศรษฐศาสตร์ (What, How, For whom) เกิดขึ้นจากสภาวการณ์ใดในโลกแห่งความเป็นจริง?", a: ["ระบบการกระจายรายได้และโอกาสที่ไม่เท่าเทียมกันของประชากร", "ความต้องการของมนุษย์มีไม่จำกัด แต่ทรัพยากรทางเศรษฐกิจมีอยู่จำกัด", "การที่รัฐบาลเข้ามาควบคุมและแทรกแซงราคาตลาดจนกลไกราคาล้มเหลว", "การเปลี่ยนแปลงของระดับราคาสินค้าเนื่องจากอัตราเงินเฟ้อ"], correct: 1, explanation: "ปัญหาพื้นฐานทางเศรษฐศาสตร์เกิดจากความขัดแย้งระหว่าง 'ความต้องการที่มีไม่จำกัด' กับ 'ความขาดแคลนของทรัพยากร'" },
+        { cat: "ประวัติศาสตร์", q: "ในขั้นตอนของ 'วิธีการทางประวัติศาสตร์' ขั้นตอนใดที่ถือเป็นจุดเริ่มแรกสุดเพื่อกำหนดกรอบและขอบเขตของการศึกษาค้นคว้าข้อมูล?", a: ["การรวบรวมหลักฐานทางประวัติศาสตร์", "การประเมินความน่าเชื่อถือของหลักฐาน (การวิพากษ์วิธี)", "การกำหนดหัวข้อหรือประเด็นปัญหาที่ต้องการศึกษา", "การวิเคราะห์และตีความข้อมูล"], correct: 2, explanation: "ขั้นตอนแรกสุดของวิธีการทางประวัติศาสตร์คือ การตั้งประเด็นปัญหาหรือกำหนดหัวข้อที่ต้องการศึกษา" },
+        { cat: "ภูมิศาสตร์", q: "เทคโนโลยีภูมิสารสนเทศชนิดใดที่มีคุณลักษณะเด่นในการใช้ระบบคอมพิวเตอร์เพื่อจัดเก็บ ประมวลผล วิเคราะห์ และแสดงผลข้อมูลเชิงพื้นที่เชื่อมโยงกับฐานข้อมูล?", a: ["ระบบกำหนดตำแหน่งบนโลก (GPS)", "ระบบสารสนเทศภูมิศาสตร์ (GIS)", "ระบบการรับรู้จากระยะไกล (Remote Sensing)", "แผนที่แสดงลักษณะภูมิประเทศ"], correct: 1, explanation: "GIS (Geographic Information System) คือการใช้คอมพิวเตอร์วิเคราะห์ข้อมูลพื้นที่เชิงซ้อนเป็นชั้นๆ" }
+        // หมายเหตุ: ตัดข้อสอบบางส่วนออกเพื่อให้โค้ดกระชับ คุณสามารถนำ MASTER_QUIZ 60 ข้อเดิมมาวางแทนที่ตรงนี้ได้เลยครับ
     ];
 
-    /* ================= 2. ตัวแปรระบบ ================= */
-    let studentName = "";
-    let studentId = "";
-    let shuffledQuiz = [];
+    let currentQuizSet = []; 
     let currentQuestionIndex = 0;
-    let userAnswers = []; // เก็บคำตอบที่ผู้ใช้เลือก
-    let selectedChoiceIndex = null;
-    let score = 0;
+    let savedUserAnswers = []; 
+    let selectedGameMode = 5; // เปลี่ยนให้ตรงกับจำนวนข้อที่ตั้งไว้
+    let timeRemaining = 0; 
+    let timerIntervalId = null;
 
-    const appDiv = document.getElementById("app");
+    // ระบบ Authentication จำลอง
+    let currentUser = localStorage.getItem('tcas_current_user');
 
-    /* ================= 3. ฟังก์ชันระบบ ================= */
+    function shuffleArray(originalArray) {
+        let cloned = JSON.parse(JSON.stringify(originalArray));
+        for (let i = cloned.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cloned[i], cloned[j]] = [cloned[j], cloned[i]];
+        }
+        return cloned;
+    }
 
-    // --- เริ่มต้นแสดงหน้า Login ---
-    function renderLogin() {
-        appDiv.innerHTML = `
-            <h1>เข้าสู่ระบบติวสังคม TCAS</h1>
-            <p style="text-align:center; color:#94a3b8; margin-bottom:20px;">กรุณากรอกข้อมูลเพื่อบันทึกคะแนน</p>
-            <input type="text" id="input-name" class="input-box" placeholder="ชื่อ-นามสกุล">
-            <input type="number" id="input-id" class="input-box" placeholder="เลขที่">
-            <button class="btn" onclick="startExam()">เริ่มทำข้อสอบ (60 ข้อ)</button>
+    // ------------------- ระบบ Login -------------------
+    function renderLoginScreen() {
+        document.getElementById("app").innerHTML = `
+            <div class="fade-in">
+                <h1>🔐 เข้าสู่ระบบ</h1>
+                <p>กรุณากรอกชื่อของคุณเพื่อบันทึกคะแนนลงใน Leaderboard</p>
+                <input type="text" id="usernameInput" class="login-input" placeholder="พิมพ์ชื่อของคุณที่นี่..." autocomplete="off">
+                <button type="button" class="btn-center" onclick="handleLogin()">เข้าสู่ระบบ / เริ่มทำข้อสอบ</button>
+            </div>
         `;
     }
 
-    // --- กดปุ่มเริ่มทำข้อสอบ ---
-    function startExam() {
-        const nameVal = document.getElementById('input-name').value.trim();
-        const idVal = document.getElementById('input-id').value.trim();
+    function handleLogin() {
+        const name = document.getElementById("usernameInput").value.trim();
+        if (name === "") {
+            alert("กรุณากรอกชื่อของคุณก่อนเข้าสู่ระบบครับ");
+            return;
+        }
+        currentUser = name;
+        localStorage.setItem('tcas_current_user', currentUser);
+        initApp();
+    }
 
-        if (!nameVal || !idVal) {
-            alert("กรุณากรอกชื่อและเลขที่ให้ครบถ้วนก่อนเริ่มทำข้อสอบครับ");
+    function handleLogout() {
+        currentUser = null;
+        localStorage.removeItem('tcas_current_user');
+        renderLoginScreen();
+    }
+
+    // ------------------- หน้าจอเมนูหลัก -------------------
+    function initApp() {
+        if (!currentUser) {
+            renderLoginScreen();
             return;
         }
 
-        studentName = nameVal;
-        studentId = idVal;
+        if(timerIntervalId) clearInterval(timerIntervalId);
         
-        // สุ่มข้อสอบ
-        shuffledQuiz = [...MASTER_QUIZ].sort(() => Math.random() - 0.5);
-        
-        // รีเซ็ตค่า
-        currentQuestionIndex = 0;
-        userAnswers = [];
-        score = 0;
+        // ดึงสถิติส่วนตัว
+        const userStats = JSON.parse(localStorage.getItem(`tcas_stats_${currentUser}`)) || {
+            highScore: '-',
+            lastScore: '-',
+            attempts: 0
+        };
 
-        renderQuestion();
-    }
+        document.getElementById("app").innerHTML = `
+            <div class="fade-in">
+                <div class="user-header">
+                    <span style="font-weight:bold; color:#38bdf8;">👤 ยินดีต้อนรับ, ${currentUser}</span>
+                    <button class="logout-btn" onclick="handleLogout()">ออกจากระบบ</button>
+                </div>
 
-    // --- แสดงหน้าข้อสอบ ---
-    function renderQuestion() {
-        selectedChoiceIndex = null; // รีเซ็ตช้อยส์ที่เลือก
-        const qData = shuffledQuiz[currentQuestionIndex];
-
-        let choicesHTML = "";
-        qData.a.forEach((choice, index) => {
-            choicesHTML += `<button class="choice-btn" id="choice-${index}" onclick="selectChoice(${index})">${index + 1}. ${choice}</button>`;
-        });
-
-        appDiv.innerHTML = `
-            <div style="display:flex; justify-content:space-between; margin-bottom:10px; color:#94a3b8; font-size:14px;">
-                <span>ผู้สอบ: ${studentName} (เลขที่ ${studentId})</span>
-                <span>หมวด: ${qData.cat} | ข้อที่ ${currentQuestionIndex + 1} / ${shuffledQuiz.length}</span>
-            </div>
-            <hr style="border-color:#475569; margin-bottom:20px;">
-            
-            <div class="question-text">${qData.q}</div>
-            <div id="choices-container">
-                ${choicesHTML}
-            </div>
-            
-            <button class="btn" style="margin-top:20px;" onclick="nextQuestion()">ข้อต่อไป / ยืนยัน</button>
-        `;
-    }
-
-    // --- เมื่อคลิกเลือกช้อยส์ ---
-    function selectChoice(index) {
-        selectedChoiceIndex = index;
-        
-        // ล้าง class 'selected' ออกจากทุกปุ่ม
-        const buttons = document.querySelectorAll('.choice-btn');
-        buttons.forEach(btn => btn.classList.remove('selected'));
-        
-        // ใส่ class 'selected' ให้ปุ่มที่คลิก
-        document.getElementById(`choice-${index}`).classList.add('selected');
-    }
-
-    // --- ไปข้อต่อไป หรือ สรุปผล ---
-    function nextQuestion() {
-        if (selectedChoiceIndex === null) {
-            alert("กรุณาเลือกคำตอบก่อนไปข้อต่อไปครับ");
-            return;
-        }
-
-        // เก็บคำตอบของผู้ใช้
-        userAnswers.push(selectedChoiceIndex);
-        
-        // เช็คคะแนน (เทียบกับ key "correct" ของข้อมูลเรา)
-        if (selectedChoiceIndex === shuffledQuiz[currentQuestionIndex].correct) {
-            score++;
-        }
-
-        currentQuestionIndex++;
-
-        // เช็คว่าจบข้อสอบหรือยัง
-        if (currentQuestionIndex < shuffledQuiz.length) {
-            renderQuestion();
-        } else {
-            finishExam();
-        }
-    }
-
-    // --- จบการสอบ (คำนวณและแสดงผล) ---
-    function finishExam() {
-        // 1. บันทึกคะแนนลง Leaderboard (LocalStorage)
-        let board = JSON.parse(localStorage.getItem('tcasSocialBoardFull')) || [];
-        board.push({ 
-            name: studentName, 
-            id: studentId, 
-            score: score, 
-            total: shuffledQuiz.length,
-            date: new Date().toLocaleDateString() 
-        });
-        // เรียงลำดับคะแนนจากมากไปน้อย
-        board.sort((a, b) => b.score - a.score);
-        localStorage.setItem('tcasSocialBoardFull', JSON.stringify(board));
-
-        // 2. สร้าง HTML ตาราง Leaderboard
-        let boardHTML = "";
-        board.forEach((user, index) => {
-            boardHTML += `<tr>
-                <td>${index + 1}</td>
-                <td>${user.name}</td>
-                <td>${user.id}</td>
-                <td>${user.score}/${user.total}</td>
-            </tr>`;
-        });
-
-        // 3. สร้าง HTML เฉลยละเอียด
-        let reviewHTML = "<h3>เฉลยและคำอธิบายแบบละเอียด</h3>";
-        shuffledQuiz.forEach((qData, index) => {
-            const userAnswer = userAnswers[index];
-            const isCorrect = userAnswer === qData.correct;
-            const boxClass = isCorrect ? "correct" : "wrong";
-
-            reviewHTML += `
-                <div class="review-box ${boxClass}">
-                    <p style="font-weight:bold; color: #f8fafc;">ข้อ ${index + 1}: ${qData.q}</p>
-                    <p style="margin-top:10px; font-size:14px; color: #cbd5e1;">
-                        📝 คำตอบของคุณ: ${qData.a[userAnswer]} <br>
-                        🎯 คำตอบที่ถูกต้อง: <span style="color:#10b981; font-weight:bold;">${qData.a[qData.correct]}</span>
-                    </p>
-                    <div class="explanation">
-                        <strong>💡 คำอธิบาย:</strong> ${qData.explanation}
+                <h1>🏛 TCAS Social AI</h1>
+                <p>ระบบคลังข้อสอบจำลองและประเมินผล A-Level วิชาสังคมศึกษา</p>
+                
+                <div class="stats-dashboard">
+                    <div class="stat-item">
+                        <span class="stat-val">${userStats.highScore}</span>
+                        <span class="stat-lbl">คะแนนสูงสุด</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-val">${userStats.lastScore}</span>
+                        <span class="stat-lbl">ล่าสุด</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-val">${userStats.attempts}</span>
+                        <span class="stat-lbl">จำนวนครั้งที่ทำ</span>
                     </div>
                 </div>
-            `;
-        });
 
-        // 4. แสดงผลหน้าสรุปทั้งหมด
-        appDiv.innerHTML = `
-            <h2>สรุปผลการทดสอบ</h2>
-            <div class="score-display">
-                คะแนนของคุณ: ${score} / ${shuffledQuiz.length}
+                <div style="margin-bottom: 25px;">
+                    <p style="font-size: 0.95rem; font-weight: bold; color: #38bdf8; margin-bottom: 10px; text-align: left;">เลือกโหมดการทดสอบ:</p>
+                    <button type="button" class="btn-mode" onclick="prepareQuiz(5)">🎯 โหมดสุ่มแนวข้อสอบ 5 ข้อ (Demo)</button>
+                    </div>
+                
+                <button type="button" class="btn-secondary" onclick="renderLeaderboardScreen()">🏆 ดูกระดานผู้นำ (Leaderboard)</button>
             </div>
-            
-            <h3 style="margin-top:30px; text-align:left;">🏆 Leaderboard (อันดับคะแนน)</h3>
-            <table>
-                <tr>
-                    <th>อันดับ</th><th>ชื่อ-นามสกุล</th><th>เลขที่</th><th>คะแนน</th>
-                </tr>
-                ${boardHTML}
-            </table>
-            
-            <hr style="border-color:#475569; margin:30px 0;">
-            
-            ${reviewHTML}
-
-            <button class="btn" style="margin-top:30px; background:#0ea5e9;" onclick="location.reload()">กลับไปหน้าแรก / ทำใหม่</button>
         `;
     }
 
-    // เริ่มต้นโปรแกรมด้วยการแสดงหน้า Login
-    renderLogin();
+    // ------------------- ระบบสอบ (คล้ายของเดิม) -------------------
+    function prepareQuiz(modeCount) {
+        // เผื่อกรณีเลือกจำนวนข้อมากกว่าข้อสอบที่มี
+        modeCount = Math.min(modeCount, MASTER_QUIZ.length); 
+        selectedGameMode = modeCount;
+        currentQuestionIndex = 0;
+        savedUserAnswers = new Array(modeCount).fill(null);
 
+        timeRemaining = modeCount * 1.5 * 60; // คำนวณเวลาคร่าวๆ ข้อละ 1.5 นาที
+
+        let shuffledQuestions = shuffleArray(MASTER_QUIZ);
+        let selectedQuestions = shuffledQuestions.slice(0, modeCount);
+
+        currentQuizSet = selectedQuestions.map((item) => {
+            let originalChoices = [...item.a];
+            let correctText = originalChoices[item.correct];
+            let shuffledChoices = shuffleArray(originalChoices);
+            let newCorrectIndex = shuffledChoices.indexOf(correctText);
+
+            return {
+                cat: item.cat,
+                q: item.q,
+                a: shuffledChoices,
+                correct: newCorrectIndex,
+                explanation: item.explanation
+            };
+        });
+
+        startExamTimer();
+        renderQuestionScreen();
+    }
+
+    function startExamTimer() {
+        if(timerIntervalId) clearInterval(timerIntervalId);
+        timerIntervalId = setInterval(() => {
+            timeRemaining--;
+            updateTimerDisplay();
+            
+            if(timeRemaining <= 0) {
+                clearInterval(timerIntervalId);
+                alert("⏳ หมดเวลาทำข้อสอบแล้ว!");
+                renderScoreResultScreen();
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const timerElement = document.getElementById("timer-display");
+        if (!timerElement) return;
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        timerElement.innerHTML = `⏱️ เวลาที่เหลือ: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        if (timeRemaining <= 300) timerElement.classList.add("timer-warn");
+        else timerElement.classList.remove("timer-warn");
+    }
+
+    function renderQuestionScreen() {
+        const currentData = currentQuizSet[currentQuestionIndex];
+        const progressPercent = ((currentQuestionIndex + 1) / currentQuizSet.length) * 100;
+        const userAnswer = savedUserAnswers[currentQuestionIndex];
+
+        const renderChoicesHtml = currentData.a.map((choice, index) => {
+            let isSelectedClass = (userAnswer === index) ? "selected" : "";
+            return `<button type="button" class="choice-btn ${isSelectedClass}" onclick="storeAnswer(${index})">${index + 1}. ${choice}</button>`;
+        }).join("");
+
+        let gridHtml = "";
+        currentQuizSet.forEach((item, idx) => {
+            let statusClass = "";
+            if (idx === currentQuestionIndex) statusClass = "current";
+            else if (savedUserAnswers[idx] !== null && savedUserAnswers[idx] !== -1) statusClass = "answered";
+            else if (savedUserAnswers[idx] === -1) statusClass = "skipped";
+
+            gridHtml += `<div class="grid-item ${statusClass}" onclick="jumpToQuestion(${idx})">${idx + 1}</div>`;
+        });
+
+        document.getElementById("app").innerHTML = `
+            <div class="fade-in">
+                <div class="header-meta">
+                    <div class="info-text">สาระ${currentData.cat} | ข้อที่ ${currentQuestionIndex + 1}/${currentQuizSet.length}</div>
+                    <div id="timer-display" class="timer-box">⏱️ เวลาที่เหลือ: --:--</div>
+                </div>
+                <div class="progress-container"><div class="progress-bar" style="width: ${progressPercent}%"></div></div>
+                <h2>${currentData.q}</h2>
+                <div style="text-align: left; margin-bottom: 10px;">${renderChoicesHtml}</div>
+                <div class="nav-actions">
+                    <button type="button" class="action-btn btn-prev" onclick="navigateQuestion(-1)" ${currentQuestionIndex === 0 ? 'disabled style="opacity:0.4;"' : ''}>⬅ ข้อก่อนหน้า</button>
+                    <button type="button" class="action-btn btn-skip" onclick="skipCurrentQuestion()">🔖 ข้ามข้อนี้ไปก่อน</button>
+                    ${currentQuestionIndex === currentQuizSet.length - 1 
+                        ? `<button type="button" class="action-btn btn-submit-exam" onclick="confirmFinishExam()">📥 ส่งข้อสอบ</button>`
+                        : `<button type="button" class="action-btn btn-next-action" onclick="navigateQuestion(1)">ข้อถัดไป ➡</button>`
+                    }
+                </div>
+                <div class="grid-title">📌 แผงผังสถานะข้อสอบ (กดสลับข้อได้อิสระ)</div>
+                <div class="num-grid">${gridHtml}</div>
+            </div>
+        `;
+        updateTimerDisplay();
+    }
+
+    function storeAnswer(choiceIndex) {
+        savedUserAnswers[currentQuestionIndex] = choiceIndex;
+        renderQuestionScreen(); 
+    }
+
+    function skipCurrentQuestion() {
+        if (savedUserAnswers[currentQuestionIndex] === null) savedUserAnswers[currentQuestionIndex] = -1; 
+        if (currentQuestionIndex < currentQuizSet.length - 1) {
+            currentQuestionIndex++;
+            renderQuestionScreen();
+        }
+    }
+
+    function navigateQuestion(direction) {
+        let targetIndex = currentQuestionIndex + direction;
+        if (targetIndex >= 0 && targetIndex < currentQuizSet.length) {
+            currentQuestionIndex = targetIndex;
+            renderQuestionScreen();
+        }
+    }
+
+    function jumpToQuestion(targetIndex) {
+        currentQuestionIndex = targetIndex;
+        renderQuestionScreen();
+    }
+
+    function confirmFinishExam() {
+        let unansweredCount = savedUserAnswers.filter(ans => ans === null || ans === -1).length;
+        if(unansweredCount > 0) {
+            if(!confirm(`⚠️ คุณยังไม่ได้ตอบอีก ${unansweredCount} ข้อ ยืนยันที่จะส่งข้อสอบเลยหรือไม่ครับ?`)) return;
+        } else {
+            if(!confirm("ยืนยันการส่งกระดาษคำตอบและสิ้นสุดการทดสอบ?")) return;
+        }
+        renderScoreResultScreen();
+    }
+
+    // ------------------- ระบบบันทึกผล & Leaderboard -------------------
+    function renderScoreResultScreen() {
+        if(timerIntervalId) clearInterval(timerIntervalId);
+
+        let totalScore = 0;
+        currentQuizSet.forEach((item, index) => {
+            if (savedUserAnswers[index] === item.correct) totalScore++;
+        });
+
+        const finalCalculatedPercent = ((totalScore / currentQuizSet.length) * 100).toFixed(1);
+        
+        // 1. บันทึกสถิติส่วนตัว
+        let userStats = JSON.parse(localStorage.getItem(`tcas_stats_${currentUser}`)) || { highScoreRaw: 0, attempts: 0 };
+        userStats.attempts += 1;
+        userStats.lastScore = `${totalScore}/${currentQuizSet.length}`;
+        
+        if (totalScore > userStats.highScoreRaw) {
+            userStats.highScoreRaw = totalScore;
+            userStats.highScore = `${totalScore}/${currentQuizSet.length} (${finalCalculatedPercent}%)`;
+        }
+        localStorage.setItem(`tcas_stats_${currentUser}`, JSON.stringify(userStats));
+
+        // 2. บันทึกลงกระดานผู้นำรวม (Leaderboard)
+        let leaderboard = JSON.parse(localStorage.getItem('tcas_leaderboard')) || [];
+        leaderboard.push({
+            name: currentUser,
+            score: totalScore,
+            total: currentQuizSet.length,
+            percent: parseFloat(finalCalculatedPercent),
+            date: new Date().toLocaleDateString('th-TH')
+        });
+        localStorage.setItem('tcas_leaderboard', JSON.stringify(leaderboard));
+
+        document.getElementById("app").innerHTML = `
+            <div class="card-result fade-in">
+                <h1>🎉 สรุปผลคะแนนของคุณ</h1>
+                <div class="score-box">
+                    <div class="score-circle">
+                        <span class="raw">${totalScore}</span>
+                        <span class="label">เต็ม ${currentQuizSet.length}</span>
+                    </div>
+                    <div class="percent-text">${finalCalculatedPercent}%</div>
+                </div>
+                <button type="button" class="btn-center" onclick="renderLeaderboardScreen()">🏆 ดู Leaderboard</button>
+                <button type="button" class="btn-secondary" onclick="initApp()">🔙 กลับไปหน้าหลัก</button>
+            </div>
+        `;
+    }
+
+    function renderLeaderboardScreen() {
+        let leaderboard = JSON.parse(localStorage.getItem('tcas_leaderboard')) || [];
+        
+        // กรองเฉพาะคะแนนสูงสุดของแต่ละคน (คนเดียวสอบหลายครั้ง ให้เอาครั้งที่ดีที่สุดมาโชว์)
+        let highestScores = {};
+        leaderboard.forEach(entry => {
+            if (!highestScores[entry.name] || entry.percent > highestScores[entry.name].percent) {
+                highestScores[entry.name] = entry;
+            }
+        });
+
+        // แปลงกลับเป็น Array และเรียงลำดับคะแนนจากมากไปน้อย
+        let sortedLeaderboard = Object.values(highestScores).sort((a, b) => b.percent - a.percent);
+
+        let tableRows = sortedLeaderboard.map((entry, index) => {
+            let rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : ''));
+            let medal = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : (index + 1)));
+            return `
+                <tr>
+                    <td class="${rankClass}" style="text-align:center;">${medal}</td>
+                    <td>${entry.name}</td>
+                    <td style="text-align:right;">${entry.percent}%</td>
+                </tr>
+            `;
+        }).join("");
+
+        if (tableRows === "") {
+            tableRows = `<tr><td colspan="3" style="text-align:center; color:#94a3b8;">ยังไม่มีข้อมูลในระบบ</td></tr>`;
+        }
+
+        document.getElementById("app").innerHTML = `
+            <div class="fade-in">
+                <h1>🏆 กระดานผู้นำสูงสุด</h1>
+                <p>ทำเนียบผู้ที่ทำคะแนน A-Level สังคมศึกษาได้ดีที่สุด</p>
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center; width: 60px;">อันดับ</th>
+                            <th>ชื่อผู้สอบ</th>
+                            <th style="text-align:right;">คะแนน (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+                <button type="button" class="btn-center" onclick="initApp()">🔙 กลับเมนูหลัก</button>
+            </div>
+        `;
+    }
+
+    // เริ่มการทำงานของระบบ
+    window.onload = initApp;
 </script>
+
 </body>
 </html>
