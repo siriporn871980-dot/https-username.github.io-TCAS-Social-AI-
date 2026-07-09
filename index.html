@@ -105,6 +105,76 @@
 <body>
 
 <div class="card" id="app"></div>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCAS Social AI - Platform</title>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: 'Sarabun', sans-serif; display: flex; justify-content: center; padding: 20px; }
+        .card { background: #1e293b; padding: 30px; border-radius: 24px; max-width: 750px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .input-box { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1px solid #475569; background: #334155; color: white; }
+        .btn { background: #e11d48; color: white; padding: 14px; border: none; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 10px; }
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; color: white; }
+        th, td { padding: 12px; border-bottom: 1px solid #475569; text-align: left; }
+    </style>
+</head>
+<body>
+
+<div class="card" id="app">
+    <div id="login-screen">
+        <h1>เข้าสู่ระบบติวสังคม</h1>
+        <input type="text" id="user-name" class="input-box" placeholder="ชื่อ-นามสกุล">
+        <input type="number" id="user-id" class="input-box" placeholder="เลขที่">
+        <button class="btn" onclick="loginAndStart()">เริ่มเข้าสู่ระบบทดสอบ</button>
+    </div>
+</div>
+
+<script>
+    // ... (คงค่า MASTER_QUIZ เดิมของคุณไว้) ...
+    const MASTER_QUIZ = [ /* ... 60 ข้อของคุณ ... */ ];
+
+    function loginAndStart() {
+        const name = document.getElementById('user-name').value;
+        const id = document.getElementById('user-id').value;
+        if(!name || !id) return alert("กรุณากรอกชื่อและเลขที่ก่อนครับ");
+        
+        // บันทึกตัวตนชั่วคราว
+        sessionStorage.setItem('sName', name);
+        sessionStorage.setItem('sId', id);
+        
+        // เรียกฟังก์ชันเริ่มเกมเดิมของคุณ
+        initApp(); 
+    }
+
+    // แก้ไขฟังก์ชัน finishExam ของคุณ ให้บันทึกลง Leaderboard ด้วย
+    function finishExam() {
+        const name = sessionStorage.getItem('sName');
+        const id = sessionStorage.getItem('sId');
+        const score = currentScore; // คะแนนที่รวมได้จากระบบเดิม
+        
+        // บันทึกลง localStorage (Leaderboard)
+        let board = JSON.parse(localStorage.getItem('socialBoard')) || [];
+        board.push({ name, id, score, date: new Date().toLocaleDateString() });
+        board.sort((a, b) => b.score - a.score);
+        localStorage.setItem('socialBoard', JSON.stringify(board));
+
+        // แสดงหน้าสรุป + ตาราง Leaderboard
+        document.getElementById("app").innerHTML = `
+            <h2>สรุปผล: ${name} (เลขที่ ${id})</h2>
+            <p>คะแนนที่ได้: ${score}/${currentQuizSet.length}</p>
+            <h3>ตารางอันดับคะแนน</h3>
+            <table>
+                <tr><th>ชื่อ</th><th>เลขที่</th><th>คะแนน</th></tr>
+                ${board.map(r => `<tr><td>${r.name}</td><td>${r.id}</td><td>${r.score}</td></tr>`).join('')}
+            </table>
+            <button class="btn" onclick="location.reload()">ทำแบบทดสอบใหม่</button>
+        `;
+    }
+</script>
+</body>
+</html>
 
 <script>
     // คลังข้อสอบหลัก 60 ข้อ
