@@ -14,48 +14,66 @@
         body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         
         .card {
-            background: #1e293b; padding: 40px 30px; border-radius: 24px; max-width: 700px; width: 100%;
+            background: #1e293b; padding: 30px; border-radius: 24px; max-width: 750px; width: 100%;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-            border: 1px solid #334155; transition: all 0.3s ease; text-align: center;
+            border: 1px solid #334155; transition: all 0.3s ease; text-align: center; position: relative;
         }
 
         h1 { font-size: 2rem; color: #38bdf8; margin-bottom: 10px; font-weight: 700; }
-        h2 { font-size: 1.3rem; color: #e2e8f0; margin-bottom: 25px; line-height: 1.5; font-weight: 600; text-align: left; }
-        p { color: #94a3b8; font-size: 1.1rem; margin-bottom: 25px; }
+        h2 { font-size: 1.25rem; color: #e2e8f0; margin-bottom: 20px; line-height: 1.5; font-weight: 600; text-align: left; }
+        p { color: #94a3b8; font-size: 1.05rem; margin-bottom: 25px; }
 
-        .fade-in { animation: fadeInEffect 0.35s ease-out forwards; will-change: opacity, transform; }
+        .header-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #131c2e; padding: 10px 15px; border-radius: 12px; border: 1px solid #334155; }
+        .timer-box { font-size: 1.1rem; font-weight: 700; color: #f59e0b; display: flex; align-items: center; gap: 5px; }
+        .timer-warn { color: #ef4444; animation: pulse 1s infinite; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .fade-in { animation: fadeInEffect 0.35s ease-out forwards; }
         @keyframes fadeInEffect {
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .progress-container { width: 100%; background-color: #334155; border-radius: 9999px; height: 8px; margin-bottom: 25px; overflow: hidden; }
+        .progress-container { width: 100%; background-color: #334155; border-radius: 9999px; height: 6px; margin-bottom: 20px; overflow: hidden; }
         .progress-bar { background: linear-gradient(90deg, #3b82f6, #06b6d4); height: 100%; width: 0%; transition: width 0.3s ease; }
-        .info-text { font-size: 0.95rem; color: #38bdf8; margin-bottom: 10px; text-transform: uppercase; font-weight: 600; text-align: left; }
+        .info-text { font-size: 0.9rem; color: #38bdf8; font-weight: 600; text-transform: uppercase; }
 
-        button {
-            background: #2563eb; color: #ffffff; padding: 16px 24px; border: none; border-radius: 14px;
-            font-size: 1.05rem; font-weight: 600; margin: 10px 0; cursor: pointer; width: 100%;
-            transition: all 0.2s ease; text-align: left; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        .choice-btn {
+            background: #334155; color: #ffffff; padding: 14px 20px; border: 1px solid #475569; border-radius: 12px;
+            font-size: 1rem; font-weight: 500; margin: 8px 0; cursor: pointer; width: 100%;
+            transition: all 0.2s ease; text-align: left;
         }
-        button:hover:not(:disabled) { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3); }
-        button:active:not(:disabled) { transform: translateY(0); }
-        
-        .btn-center { text-align: center; background: linear-gradient(135deg, #3b82f6, #2563eb); margin-top: 15px; }
-        .btn-secondary { background: #475569; text-align: center; margin-top: 5px; }
-        .btn-secondary:hover:not(:disabled) { background: #334155; }
-        .btn-mode { background: #334155; border: 1px solid #475569; text-align: center; margin: 6px 0; }
+        .choice-btn:hover { background: #475569; transform: translateY(-1px); }
+        .choice-btn.selected { background: #2563eb; border-color: #3b82f6; font-weight: 600; }
+
+        .nav-actions { display: flex; gap: 10px; margin-top: 20px; border-top: 1px solid #334155; padding-top: 15px; }
+        .action-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 0.95rem; text-align: center; transition: all 0.2s; }
+        .btn-prev { background: #475569; color: white; }
+        .btn-skip { background: #1e293b; color: #94a3b8; border: 1px solid #475569; }
+        .btn-next-action { background: #0284c7; color: white; }
+        .btn-submit-exam { background: #10b981; color: white; }
+        .action-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* Navigation Grid */
+        .grid-title { text-align: left; font-size: 0.9rem; color: #94a3b8; margin: 20px 0 8px; font-weight: 600; }
+        .num-grid { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-start; margin-bottom: 10px; max-height: 95px; overflow-y: auto; padding: 2px; }
+        .grid-item { width: 32px; height: 32px; border-radius: 6px; background: #334155; color: #cbd5e1; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; }
+        .grid-item:hover { background: #475569; color: white; }
+        .grid-item.current { border: 2px solid #38bdf8; color: #38bdf8; }
+        .grid-item.answered { background: #1e3a8a; color: #38bdf8; border-color: #2563eb; }
+        .grid-item.skipped { background: #78350f; color: #f59e0b; }
+
+        .btn-center { text-align: center; background: linear-gradient(135deg, #3b82f6, #2563eb); margin-top: 15px; padding: 14px; width: 100%; border: none; border-radius: 12px; color: white; font-weight: 600; cursor: pointer; }
+        .btn-secondary { background: #475569; text-align: center; margin-top: 5px; padding: 14px; width: 100%; border: none; border-radius: 12px; color: white; font-weight: 600; cursor: pointer; }
+        .btn-mode { background: #334155; border: 1px solid #475569; text-align: center; margin: 6px 0; padding: 14px; width: 100%; border-radius: 12px; color: white; font-weight: 600; cursor: pointer; }
         .btn-mode:hover { background: #475569; }
 
-        button.correct { background-color: #10b981 !important; color: white; border: 1px solid #059669; }
-        button.wrong { background-color: #ef4444 !important; color: white; border: 1px solid #dc2626; }
-        button:disabled { opacity: 0.7; cursor: not-allowed; }
-
         .score-box { background: #334155; border-radius: 16px; padding: 25px; margin: 20px 0; border: 2px solid #475569; }
-        .score-circle {
-            width: 120px; height: 120px; border-radius: 50%; background: #0f172a; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; margin: 0 auto 15px; border: 4px solid #38bdf8;
-        }
+        .score-circle { width: 120px; height: 120px; border-radius: 50%; background: #0f172a; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0 auto 15px; border: 4px solid #38bdf8; }
         .score-circle span.raw { font-size: 2.2rem; font-weight: bold; color: #38bdf8; line-height: 1; }
         .score-circle span.label { font-size: 0.9rem; color: #94a3b8; margin-top: 5px; }
         .percent-text { font-size: 1.8rem; color: #10b981; font-weight: bold; margin-bottom: 10px; }
@@ -69,19 +87,19 @@
         .stat-val { font-size: 1.2rem; font-weight: bold; color: #38bdf8; }
         .stat-lbl { font-size: 0.8rem; color: #94a3b8; margin-top: 3px; }
 
-        .review-container { max-height: 450px; overflow-y: auto; text-align: left; margin-top: 20px; padding-right: 10px; }
-        .review-container::-webkit-scrollbar { width: 8px; }
+        .review-container { max-height: 420px; overflow-y: auto; text-align: left; margin-top: 20px; padding-right: 10px; }
+        .review-container::-webkit-scrollbar { width: 6px; }
         .review-container::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
         
-        .review-item { background: #293548; padding: 20px; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid #475569; }
-        .review-item h4 { color: #f8fafc; margin-bottom: 12px; font-size: 1.1rem; line-height: 1.5; }
-        .review-choice { padding: 10px 15px; border-radius: 8px; margin-bottom: 6px; font-size: 0.95rem; display: flex; align-items: center; }
+        .review-item { background: #293548; padding: 18px; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid #475569; }
+        .review-item h4 { color: #f8fafc; margin-bottom: 12px; font-size: 1.05rem; line-height: 1.5; }
+        .review-choice { padding: 8px 12px; border-radius: 8px; margin-bottom: 6px; font-size: 0.95rem; display: flex; align-items: center; }
         
-        .r-correct { background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; font-weight: 600; }
-        .r-wrong { background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #ef4444; }
-        .r-normal { background: #334155; color: #94a3b8; }
-        .badge { margin-left: auto; font-size: 0.8rem; padding: 3px 8px; border-radius: 12px; }
-        .explanation-box { margin-top: 12px; padding: 12px; background: #1e293b; border-radius: 8px; border-left: 3px solid #38bdf8; font-size: 0.9rem; color: #cbd5e1; line-height: 1.5; }
+        .r-correct { background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; font-weight: 600; }
+        .r-wrong { background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; }
+        .r-normal { background: #334155; color: #cbd5e1; }
+        .badge { margin-left: auto; font-size: 0.75rem; padding: 2px 6px; border-radius: 8px; }
+        .explanation-box { margin-top: 10px; padding: 10px; background: #1e293b; border-radius: 8px; border-left: 3px solid #38bdf8; font-size: 0.9rem; color: #cbd5e1; line-height: 1.5; }
     </style>
 </head>
 <body>
@@ -89,7 +107,7 @@
 <div class="card" id="app"></div>
 
 <script>
-    // คลังข้อสอบ Master 60 ข้อ (ตรวจสอบความถูกต้องและเติมคำอธิบายครบถ้วน 100%)
+    // คลังข้อสอบหลัก 60 ข้อ
     const MASTER_QUIZ = [
         // --- สาระที่ 1: ศาสนา ศีลธรรม จริยธรรม (ข้อ 1-12) ---
         { cat: "ศาสนา", q: "หลักธรรมในข้อใดของพระพุทธศาสนา ที่มีกระบวนการและทัศนคติสอดคล้องกับ 'วิธีการทางวิทยาศาสตร์' มากที่สุด?", a: ["อริยสัจ 4", "พรหมวิหาร 4", "อิทธิบาท 4", "สังคหวัตถุ 4"], correct: 0, explanation: "อริยสัจ 4 มีกระบวนการแก้ปัญหาจากเหตุไปหาผล (ทุกข์=สภาพปัญหา, สมุทัย=สาเหตุ ยึดโยงกับการตั้งสมมติฐาน, นิโรธ=เป้าหมายการแก้ปัญหา, มรรค=แนวปฏิบัติยึดโยงกับการทดลองและลงมือทำ) ซึ่งตรงกับวิธีการทางวิทยาศาสตร์ที่สุด" },
@@ -114,7 +132,7 @@
         { cat: "หน้าที่พลเมือง", q: "สถาบันทางสังคมใดที่มีบทบาทสำคัญและเป็นรากฐานอันดับแรกสุดในการทำหน้าที่ 'ขัดเกลาทางสังคมขั้นปฐมภูมิ' (Primary Socialization) แก่มนุษย์?", a: ["สถาบันการศึกษา", "สถาบันศาสนา", "สถาบันสื่อสารมวลชน", "สถาบันครอบครัว"], correct: 3, explanation: "สถาบันครอบครัวเป็นสถาบันแรกสุดที่ทำหน้าที่ขัดเกลาทางสังคม คอยอบรมสั่งสอนค่านิยม ภาษา และพฤติกรรมพื้นฐานให้แก่สมาชิกตั้งแต่แรกเกิด ซึ่งเรียกว่ากระบวนการขัดเกลาขั้นปฐมภูมิ" },
         { cat: "หน้าที่พลเมือง", q: "โครงสร้างการปกครองส่วนท้องถิ่นรูปแบบพิเศษของประเทศไทยในปัจจุบัน ประกอบด้วยหน่วยงานใดบ้าง?", a: ["เทศบาลนคร และ องค์การบริหารส่วนตำบล", "กรุงเทพมหานคร และ เมืองพัทยา", "องค์การบริหารส่วนจังหวัด และ เทศบาลเมือง", "กรุงเทพมหานคร และ จังหวัดภูเก็ต"], correct: 1, explanation: "ประเทศไทยมีการจัดระเบียบบริหารราชการส่วนท้องถิ่นรูปแบบพิเศษอยู่ 2 แห่งในปัจจุบัน คือ กรุงเทพมหานคร (กทม.) และ เมืองพัทยา เนื่องจากเป็นพื้นที่เขตเมืองหลวงและเขตเศรษฐกิจท่องเที่ยวพิเศษ" },
         { cat: "หน้าที่พลเมือง", q: "ตามหลักรัฐศาสตร์สากล ข้อใดคือองค์ประกอบของ 'รัฐ' (State) ที่ถูกต้อง สมบูรณ์ และขาดองค์ประกอบใดองค์ประกอบหนึ่งไปไม่ได้?", a: ["ประชากร, ดินแดนที่แน่นอน, รัฐบาล, รัฐธรรมนูญ", "ประชากร, ดินแดนที่แน่นอน, รัฐบาล, อำนาจอธิปไตย", "ประชากร, เมืองหลวงที่เป็นศูนย์กลาง, รัฐบาล, กองทัพ", "ประชากร, ดินแดน, อำนาจอธิปไตย, เสรีภาพทางเศรษฐกิจ"], correct: 1, explanation: "องค์ประกอบของรัฐตามหลักวิชารัฐศาสตร์สากล ต้องประกอบด้วย 4 ส่วนหลักคือ 1. ประชากร 2. ดินแดนที่มีอาณาเขตแน่นอน 3. รัฐบาลที่มีประสิทธิภาพ และ 4. อำนาจอธิปไตย (ความอิสระเด็ดขาดในการปกครองตนเอง)" },
-        { cat: "หน้าที่พลเมือง", q: "วัฒนธรรมในข้อใดจัดอยู่ในประเภท 'เนติธรรม' (Legal Culture) ที่ส่งผลต่อความสงบเรียบร้อยในสังคม?", a: ["สิ่งปลูกสร้าง โบราณสถาน และวัตถุโบราณ", "หลักธรรมทางศาสนาและความซื่อสัตย์สุจริต", "ประมวลกฎหมาย กฎระเบียบข้อบังคับ และจารีตประเพณีที่มีบทลงโทษ", "มารยาททางสังคม การแต่งกาย และการทักทาย"], correct: 2, explanation: "เนติธรรม คือ วัฒนธรรมทางกฎหมาย รวมถึงระเบียบข้อบังคับ ขนบธรรมเนียมที่มีกฎเกณฑ์ข้อบังคับควบคุมความประพฤติของคนในสังคมให้เป็นระเบียบเรียบร้อย ขัดขืนจะมีบทลงโทษชัดเจน" },
+        { cat: "หน้าที่พลเมือง", q: "วัฒนธรรมในข้อใดจัดอยู่ในประเภท 'เนติธรรม' (Legal Culture) ที่ส่งผลต่อความสงบเรียบร้อยในสังคม?", a: ["สิ่งปลูกสร้าง โบราณสถาน และวัตถุโบราณ", "หลักธรรมทางศาสนาและความซื่อสัตย์สุจริต", "ประมวลกฎหมาย กฎระเบียบข้อบังคับ และจารีตประเพณีที่มีบทลงโทษ", "มารยาททางสังคม การแต่งกาย และการทักทาย"], correct: 2, explanation: "เนติธรรม คือ ววัฒนธรรมทางกฎหมาย รวมถึงระเบียบข้อบังคับ ขนบธรรมเนียมที่มีกฎเกณฑ์ข้อบังคับควบคุมความประพฤติของคนในสังคมให้เป็นระเบียบเรียบร้อย ขัดขืนจะมีบทลงโทษชัดเจน" },
         { cat: "หน้าที่พลเมือง", q: "การดาวน์โหลดโปรแกรมคอมพิวเตอร์หรือภาพยนตร์ที่มีลิขสิทธิ์มาใช้งานหรือแจกจ่ายโดยไม่ได้รับอนุญาต ถือเป็นการละเมิดสิทธิในกฎหมายลักษณะใด?", a: ["กฎหมายลักษณะอาญาแผ่นดินเท่านั้น", "กฎหมายลักษณะแพ่งว่าด้วยนิติกรรมสัญญา", "กฎหมายทรัพย์สินทางปัญญา", "กฎหมายพาณิชย์พาณิชยกรรม"], correct: 2, explanation: "การละเมิดผลงานสร้างสรรค์ โปรแกรมคอมพิวเตอร์ หรือภาพยนตร์ จัดเป็นการละเมิด 'กฎหมายทรัพย์สินทางปัญญา' (เช่น กฎหมายลิขสิทธิ์) ซึ่งมีระบุบทลงโทษไว้เฉพาะทาง" },
         { cat: "หน้าที่พลเมือง", q: "ในระบอบประชาธิปไตยระบบรัฐสภา หากสภาผู้แทนราษฎรมีมติลงคะแนน 'ไม่ไว้วางใจ' นายกรัฐมนตรี จะส่งผลทางข้อกฎหมายอย่างไร?", a: ["นายกรัฐมนตรีและคณะรัฐมนตรีต้องพ้นจากตำแหน่งทั้งคณะ", "ประธานสภาผู้แทนราษฎรต้องทำการประกาศยุบสภาทันที", "ประธานรัฐสภาจะรักษาการในตำแหน่งนายกรัฐมนตรีโดยอัตโนมัติ", "เรื่องจะถูกส่งให้ศาลรัฐธรรมนูญวินิจฉัยความถูกต้องอีกครั้ง"], correct: 0, explanation: "หากสภาผู้แทนราษฎรลงมติไม่ไว้วางใจด้วยคะแนนเสียงมากกว่ากึ่งหนึ่ง นายกรัฐมนตรีและคณะรัฐมนตรีต้องพ้นจากตำแหน่งทั้งคณะทันทีตามหลักความรับผิดชอบร่วมกันต่อสภา" },
         { cat: "หน้าที่พลเมือง", q: "เอกสารระหว่างประเทศฉบับใดที่องค์การสหประชาชาติประกาศใช้ เพื่อเป็นมาตรฐานสากลในการคุ้มครองศักดิ์ศรีและความเท่าเทียมของมนุษย์ทุกคนหลังสงครามโลกครั้งที่ 2?", a: ["สนธิสัญญาแวร์ซายส์", "กติการะหว่างประเทศว่าด้วยสิทธิพลเมือง", "ปฏิญญาสากลว่าด้วยสิทธิมนุษยชน (UDHR)", "อนุสัญญาเจนีวา"], correct: 2, explanation: "ปฏิญญาสากลว่าด้วยสิทธิมนุษยชน (UDHR) ได้รับการรับรองโดยสมัชชาใหญ่แห่งสหประชาชาติในปี พ.ศ. 2491 เพื่อเป็นแนวทางและกรอบสากลในการปกป้องสิทธิมนุษยชนของประชากรโลกทุกคน" },
@@ -150,7 +168,7 @@
         // --- สาระที่ 5: ภูมิศาสตร์ (ข้อ 49-60) ---
         { cat: "ภูมิศาสตร์", q: "เทคโนโลยีภูมิสารสนเทศชนิดใดที่มีคุณลักษณะเด่นในการใช้ระบบคอมพิวเตอร์เพื่อจัดเก็บ ประมวลผล วิเคราะห์ และแสดงผลข้อมูลเชิงพื้นที่เชื่อมโยงกับฐานข้อมูล?", a: ["ระบบกำหนดตำแหน่งบนโลก (GPS)", "ระบบสารสนเทศภูมิศาสตร์ (GIS)", "ระบบการรับรู้จากระยะไกล (Remote Sensing)", "แผนที่แสดงลักษณะภูมิประเทศ"], correct: 1, explanation: "GIS (Geographic Information System) หรือระบบสารสนเทศภูมิศาสตร์ คือการใช้คอมพิวเตอร์วิเคราะห์ข้อมูลพื้นที่เชิงซ้อนเป็นชั้นๆ (Layers) ต่างจาก GPS ที่เน้นหาพิกัดตำแหน่ง และ RS ที่เน้นการถ่ายภาพจากระยะไกล" },
         { cat: "ภูมิศาสตร์", q: "โครงสร้างภูมิประเทศส่วนใหญ่ของภูมิภาค 'ตะวันออกเฉียงเหนือ' ของประเทศไทย มีลักษณะโดดเด่นเฉพาะแบบใดตามโครงสร้างทางธรณีวิทยา?", a: ["ที่ราบลุ่มแม่น้ำขนาดใหญ่ที่น้ำท่วมถึงสลับเนินเขา", "ที่ราบชายฝั่งทะเลแนวยาวสลับป่าชายเลน", "ที่ราบสูงรูปแอ่งกระทะขนาบด้วยทิวเขา (แอ่งโคราชและแอ่งสกลนคร)", "ภูเขาสูงชันสลับหุบเขาลึกรูปตัววี (V-shaped valley)"], correct: 2, explanation: "ภาคอีสานเป็นที่ราบสูงหินทราย โดยมีลักษณะลาดเอียงเป็นรูปแอ่งกระทะ 2 แอ่งใหญ่ ได้แก่ แอ่งโคราช (ทางตอนล่าง) และแอ่งสกลนคร (ทางตอนบน) ถูกกั้นด้วยทิวเขาภูพาน" },
-        { cat: "ภูมิศาสตร์", q: "ระบบลมมรสุมชนิดใดที่พัดผ่านประเทศไทยในช่วงเดือนพฤษภาคมถึงตุลาคม ซึ่งทำหน้าที่พัดพามวลความชื้นสูงจากมหาสมุทรอินเดียเข้ามาทำให้เกิดฤดูฝน?", a: ["ลมมรสุมตะวันออกเฉียงเหนือ", "ลมมรสุมตะวันตกร้อน", "ลมมรสุมตะวันตกเฉียงใต้", "ลมสินค้าตะวันออกเส้นศูนย์สูตร"], correct: 2, explanation: "ลมมรสุมตะวันตกเฉียงใต้ พัดจากมหาสมุทรอินเดียเข้าสู่ไทยในช่วงกลางปี นำเอาความชุ่มชื้นและเมฆฝนมาตกชุกหนาแน่น ทั่วทุกภูมิภาคยกเว้นแนวหลังเขา" },
+        { cat: "ภูมิศาสตร์", q: "ระบบลมมรสุมชนิดใดที่พัดผ่านประเทศไทยในช่วงเดือนพฤษภาคมถึงตุลาคม ซึ่งทำหน้าที่พัดพามวลความชื้นสูงจากมหาสมุทรอินเดียเข้ามาทำให้เกิดฤดูฝน?", a: ["ลมมรสุมตะวันออกเฉียงเหนือ", "ลมมรสุมตะวันตกร้อน", "ลมมรสุมตะวันกเฉียงใต้", "ลมสินค้าตะวันออกเส้นศูนย์สูตร"], correct: 2, explanation: "ลมมรสุมตะวันตกเฉียงใต้ พัดจากมหาสมุทรอินเดียเข้าสู่ไทยในช่วงกลางปี นำเอาความชุ่มชื้นและเมฆฝนมาตกชุกหนาแน่น ทั่วทุกภูมิภาคยกเว้นแนวหลังเขา" },
         { cat: "ภูมิศาสตร์", q: "ข้อตกลงความร่วมมือระหว่างประเทศหรือสนธิสัญญาด้านสิ่งแวดล้อมฉบับใด ที่มีเป้าหมายหลักในการควบคุมและลดการปล่อยก๊าซเรือนกระจกเพื่อบรรเทาปัญหาการเปลี่ยนแปลงสภาพภูมิอากาศ?", a: ["อนุสัญญาไซเตส (CITES)", "พิธีสารมอนทรีออล (Montreal Protocol)", "อนุสัญญาแรมซาร์ (Ramsar Convention)", "พิธีสารเกียวโต และ ความตกลงปารีส (Kyoto Protocol / Paris Agreement)"], correct: 3, explanation: "พิธีสารเกียวโตและความตกลงปารีส มุ่งเน้นลดการปล่อยก๊าซเรือนกระจกเพื่อสู้ภาวะโลกร้อน ส่วนมอนทรีออลลดสาร CFC ทำลายโอโซน, ไซเตสคุมค้าสัตว์ป่า, แรมซาร์คุมพื้นที่ชุ่มน้ำ" },
         { cat: "ภูมิศาสตร์", q: "พื้นที่บริเวณใดบนโลกที่เกิดความเสี่ยงและสถิติตามธรรมชาติของภัยพิบัติแผ่นดินไหวและภูเขาไฟระเบิดบ่อยครั้งและรุนแรงที่สุดเนื่องจากแนวรอยต่อของแผ่นเปลือกโลก?", a: ["บริเวณใจกลางที่ราบลุ่มแม่น้ำแอมะซอน ทวีปอเมริกาใต้", "บริเวณตอนกลางที่ราบทวีปออสเตรเลีย", "แนววงแหวนแห่งไฟ (Ring of Fire) รอบมหาสมุทรแปซิฟิก", "บริเวณคาบสมุทรสแกนดิเนเวีย"], correct: 2, explanation: "วงแหวนแห่งไฟ (Ring of Fire) เป็นแนวรอยต่อรูปเกือกม้าล้อมรอบมหาสมุทรแปซิฟิก เป็นจุดที่มีการเคลื่อนที่ของแผ่นเปลือกโลกชนกันบ่อยครั้ง ทำให้เกิดแผ่นดินไหวและภูเขาไฟระเบิดสะสมตัวถึง 90% ของโลก" },
         { cat: "ภูมิศาสตร์", q: "ปรากฏการณ์ความผิดปกติของสภาพภูมิอากาศที่เรียกว่า 'เอลนีโญ' (El Niño) มักส่งผลกระทบต่อเนื่องโดยตรงต่อสภาวะอากาศในประเทศไทยอย่างไร?", a: ["ทำให้เกิดมรสุมรุนแรง ฝนตกชุกหนาแน่นและน้ำท่วมขังเป็นเวลานาน", "ทำให้ปริมาณฝนเฉลี่ยน้อยกว่าปกติ อุณหภูมิสูงขึ้น และเกิดภาวะแห้งแล้งยาวนาน", "ทำให้เกิดพายุหมุนเขตร้อนพัดถล่มภาคใต้บ่อยขึ้น", "ทำให้ระดับน้ำทะเลชายฝั่งอ่าวไทยลดลงอย่างรวดเร็ว"], correct: 1, explanation: "เอลนีโญ (El Niño) ทำให้อุณหภูมิผิวน้ำทะเลแถบแปซิฟิกตะวันออกอุ่นขึ้น ส่งผลให้เกิดความแห้งแล้ง ฝนทิ้งช่วงยาวนาน และอุณหภูมิเฉลี่ยสูงขึ้นในภูมิภาคเอเชียตะวันออกเฉียงใต้รวมถึงไทย" },
@@ -164,9 +182,12 @@
 
     let currentQuizSet = []; 
     let currentQuestionIndex = 0;
-    let totalScore = 0;
-    let savedUserAnswers = []; 
+    let savedUserAnswers = []; // เก็บตัวเลือกที่กดตอบ (ถ้าไม่มี = null)
     let selectedGameMode = 60;
+    
+    // ตัวแปรระบบจับเวลา
+    let timeRemaining = 0; 
+    let timerIntervalId = null;
 
     function shuffleArray(originalArray) {
         let cloned = JSON.parse(JSON.stringify(originalArray));
@@ -178,6 +199,8 @@
     }
 
     function initApp() {
+        if(timerIntervalId) clearInterval(timerIntervalId);
+        
         const highScore = localStorage.getItem('tcas_high_score') || '-';
         const lastScore = localStorage.getItem('tcas_last_score') || '-';
         const attempts = localStorage.getItem('tcas_attempts_count') || '0';
@@ -185,7 +208,7 @@
         document.getElementById("app").innerHTML = `
             <div class="fade-in">
                 <h1>🏛 TCAS Social AI</h1>
-                <p>ระบบคลังข้อสอบจำลองและประเมินผล A-Level วิชาสังคมศึกษา<br>อัปเดตเกณฑ์ความถูกต้องตามข้อสอบจริง</p>
+                <p>ระบบคลังข้อสอบจำลองและประเมินผล A-Level วิชาสังคมศึกษา<br>เพิ่มฟังก์ชันจับเวลาสมจริง และระบบข้ามข้อ (Skip & Review)</p>
                 
                 <div class="stats-dashboard">
                     <div class="stat-item">
@@ -203,10 +226,10 @@
                 </div>
 
                 <div style="margin-bottom: 25px;">
-                    <p style="font-size: 0.95rem; font-weight: bold; color: #38bdf8; margin-bottom: 10px; text-align: left;">เลือกโหมดการทดสอบ:</p>
-                    <button type="button" class="btn-mode" onclick="prepareQuiz(20)">🎯 โหมดสุ่มแนวข้อสอบ 20 ข้อ</button>
-                    <button type="button" class="btn-mode" onclick="prepareQuiz(40)">⚡ โหมดสุ่มแนวข้อสอบ 40 ข้อ</button>
-                    <button type="button" class="btn-mode" onclick="prepareQuiz(60)">🔥 โหมดจัดเต็ม ครบ 60 ข้อ (แนะนำ)</button>
+                    <p style="font-size: 0.95rem; font-weight: bold; color: #38bdf8; margin-bottom: 10px; text-align: left;">เลือกโหมดการทดสอบ (จับเวลาสมจริง):</p>
+                    <button type="button" class="btn-mode" onclick="prepareQuiz(20)">🎯 โหมดสุ่มแนวข้อสอบ 20 ข้อ (30 นาที)</button>
+                    <button type="button" class="btn-mode" onclick="prepareQuiz(40)">⚡ โหมดสุ่มแนวข้อสอบ 40 ข้อ (60 นาที)</button>
+                    <button type="button" class="btn-mode" onclick="prepareQuiz(60)">🔥 โหมดจัดเต็ม ครบ 60 ข้อ (90 นาที)</button>
                 </div>
             </div>
         `;
@@ -215,8 +238,10 @@
     function prepareQuiz(modeCount) {
         selectedGameMode = modeCount;
         currentQuestionIndex = 0;
-        totalScore = 0;
-        savedUserAnswers = [];
+        savedUserAnswers = new Array(modeCount).fill(null);
+
+        // คำนวณเวลา (20ข้อ=30นาที, 40ข้อ=60นาที, 60ข้อ=90นาที)
+        timeRemaining = modeCount === 20 ? 30 * 60 : (modeCount === 40 ? 60 * 60 : 90 * 60);
 
         let shuffledQuestions = shuffleArray(MASTER_QUIZ);
         let selectedQuestions = shuffledQuestions.slice(0, modeCount);
@@ -240,57 +265,153 @@
         let currentAttempts = parseInt(localStorage.getItem('tcas_attempts_count') || '0');
         localStorage.setItem('tcas_attempts_count', currentAttempts + 1);
 
+        startExamTimer();
         renderQuestionScreen();
+    }
+
+    function startExamTimer() {
+        if(timerIntervalId) clearInterval(timerIntervalId);
+        
+        timerIntervalId = setInterval(() => {
+            timeRemaining--;
+            updateTimerDisplay();
+            
+            if(timeRemaining <= 0) {
+                clearInterval(timerIntervalId);
+                alert("⏳ หมดเวลาทำข้อสอบแล้ว! ระบบจะทำการส่งข้อสอบและคำนวณคะแนนให้อัตโนมัติครับ");
+                renderScoreResultScreen();
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const timerElement = document.getElementById("timer-display");
+        if (!timerElement) return;
+
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        timerElement.innerHTML = `⏱️ เวลาที่เหลือ: ${formattedTime}`;
+        
+        // เตือน 5 นาทีสุดท้ายด้วยแถบสีแดงกระพริบ
+        if (timeRemaining <= 300) {
+            timerElement.classList.add("timer-warn");
+        } else {
+            timerElement.classList.remove("timer-warn");
+        }
     }
 
     function renderQuestionScreen() {
         const currentData = currentQuizSet[currentQuestionIndex];
         const progressPercent = ((currentQuestionIndex + 1) / currentQuizSet.length) * 100;
+        const userAnswer = savedUserAnswers[currentQuestionIndex];
 
-        const renderChoicesHtml = currentData.a.map((choice, index) => 
-            `<button type="button" onclick="evaluateUserSelection(${index}, this)">${index + 1}. ${choice}</button>`
-        ).join("");
+        // เรนเดอร์ตัวเลือกคำตอบ
+        const renderChoicesHtml = currentData.a.map((choice, index) => {
+            let isSelectedClass = (userAnswer === index) ? "selected" : "";
+            return `<button type="button" class="choice-btn ${isSelectedClass}" onclick="storeAnswer(${index})">${index + 1}. ${choice}</button>`;
+        }).join("");
+
+        // เรนเดอร์ตารางเลขข้อด่วน (Navigation Grid)
+        let gridHtml = "";
+        currentQuizSet.forEach((item, idx) => {
+            let statusClass = "";
+            if (idx === currentQuestionIndex) statusClass = "current";
+            else if (savedUserAnswers[idx] !== null) statusClass = "answered";
+            else if (savedUserAnswers[idx] === -1) statusClass = "skipped"; // ข้าม
+
+            gridHtml += `<div class="grid-item ${statusClass}" onclick="jumpToQuestion(${idx})">${idx + 1}</div>`;
+        });
 
         document.getElementById("app").innerHTML = `
             <div class="fade-in">
-                <div class="info-text">สาระ${currentData.cat} | ข้อที่ ${currentQuestionIndex + 1} จาก ${currentQuizSet.length}</div>
+                <div class="header-meta">
+                    <div class="info-text">สาระ${currentData.cat} | ข้อที่ ${currentQuestionIndex + 1}/${currentQuizSet.length}</div>
+                    <div id="timer-display" class="timer-box">⏱️ เวลาที่เหลือ: --:--</div>
+                </div>
+                
                 <div class="progress-container">
                     <div class="progress-bar" style="width: ${progressPercent}%"></div>
                 </div>
+                
                 <h2>${currentData.q}</h2>
-                <div style="text-align: left;">
+                <div style="text-align: left; margin-bottom: 10px;">
                     ${renderChoicesHtml}
+                </div>
+
+                <div class="nav-actions">
+                    <button type="button" class="action-btn btn-prev" onclick="navigateQuestion(-1)" ${currentQuestionIndex === 0 ? 'disabled style="opacity:0.4;"' : ''}>⬅ ข้อก่อนหน้า</button>
+                    <button type="button" class="action-btn btn-skip" onclick="skipCurrentQuestion()">🔖 ข้ามข้อนี้ไปก่อน</button>
+                    
+                    ${currentQuestionIndex === currentQuizSet.length - 1 
+                        ? `<button type="button" class="action-btn btn-submit-exam" onclick="confirmFinishExam()">📥 ส่งข้อสอบ</button>`
+                        : `<button type="button" class="action-btn btn-next-action" onclick="navigateQuestion(1)">ข้อถัดไป ➡</button>`
+                    }
+                </div>
+
+                <div class="grid-title">📌 แผงผังสถานะข้อสอบ (กดสลับข้อได้อิสระ)</div>
+                <div class="num-grid">
+                    ${gridHtml}
                 </div>
             </div>
         `;
+        updateTimerDisplay();
     }
 
-    function evaluateUserSelection(selectedIndex, clickedButtonElement) {
-        const currentData = currentQuizSet[currentQuestionIndex];
-        const allButtonsInDom = document.querySelectorAll("#app button");
+    function storeAnswer(choiceIndex) {
+        savedUserAnswers[currentQuestionIndex] = choiceIndex;
+        renderQuestionScreen(); // อัปเดตสถานะปุ่มและ Grid ทันทีที่เลือก
+    }
 
-        savedUserAnswers[currentQuestionIndex] = selectedIndex;
-        allButtonsInDom.forEach(btn => btn.disabled = true);
-
-        if (selectedIndex === currentData.correct) {
-            totalScore++;
-            clickedButtonElement.classList.add("correct");
-        } else {
-            clickedButtonElement.classList.add("wrong");
-            allButtonsInDom[currentData.correct].classList.add("correct");
+    function skipCurrentQuestion() {
+        if (savedUserAnswers[currentQuestionIndex] === null) {
+            savedUserAnswers[currentQuestionIndex] = -1; // มาร์กว่าข้าม
         }
-
-        setTimeout(() => {
+        if (currentQuestionIndex < currentQuizSet.length - 1) {
             currentQuestionIndex++;
-            if (currentQuestionIndex < currentQuizSet.length) {
-                renderQuestionScreen();
-            } else {
-                renderScoreResultScreen();
+            renderQuestionScreen();
+        } else {
+            alert("คุณอยู่ที่ข้อสุดท้ายแล้วครับ สามารถตรวจสอบข้อที่ข้ามได้ในแผงผังด้านล่าง");
+        }
+    }
+
+    function navigateQuestion(direction) {
+        let targetIndex = currentQuestionIndex + direction;
+        if (targetIndex >= 0 && targetIndex < currentQuizSet.length) {
+            currentQuestionIndex = targetIndex;
+            renderQuestionScreen();
+        }
+    }
+
+    function jumpToQuestion(targetIndex) {
+        currentQuestionIndex = targetIndex;
+        renderQuestionScreen();
+    }
+
+    function confirmFinishExam() {
+        let unansweredCount = savedUserAnswers.filter(ans => ans === null || ans === -1).length;
+        if(unansweredCount > 0) {
+            if(!confirm(`⚠️ คุณยังไม่ได้ตอบอีก ${unansweredCount} ข้อ ยืนยันที่จะส่งข้อสอบเลยหรือไม่ครับ?`)) {
+                return;
             }
-        }, 550);
+        } else {
+            if(!confirm("ยืนยันการส่งกระดาษคำตอบและสิ้นสุดการทดสอบ?")) return;
+        }
+        renderScoreResultScreen();
     }
 
     function renderScoreResultScreen() {
+        if(timerIntervalId) clearInterval(timerIntervalId);
+
+        // คำนวณคะแนนรวม
+        let totalScore = 0;
+        currentQuizSet.forEach((item, index) => {
+            if (savedUserAnswers[index] === item.correct) {
+                totalScore++;
+            }
+        });
+
         const finalCalculatedPercent = ((totalScore / currentQuizSet.length) * 100).toFixed(1);
         
         localStorage.setItem('tcas_last_score', `${totalScore}/${currentQuizSet.length}`);
@@ -376,9 +497,14 @@
                 return `<div class="review-choice ${statusCssClass}">${cIndex + 1}. ${choiceText} ${stateBadgeHtml}</div>`;
             }).join("");
 
+            let userNotAnsweredText = (userSelectedChoice === null || userSelectedChoice === -1) 
+                ? `<div style="color:#f59e0b; margin-bottom: 8px; font-weight:bold; font-size:0.9rem;">⚠️ คุณข้ามข้อนี้ไป (ไม่ได้รับคะแนน)</div>` 
+                : "";
+
             reviewListHtml += `
                 <div class="review-item" style="${currentItemBorderColor}">
                     <h4>ข้อ ${index + 1} [สาระ${questionItem.cat}]: ${questionItem.q}</h4>
+                    ${userNotAnsweredText}
                     ${choiceItemsHtml}
                     <div class="explanation-box">
                         <strong>💡 คำอธิบายเฉลย:</strong> ${questionItem.explanation}
